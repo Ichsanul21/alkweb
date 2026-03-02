@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght;400;500;600;700;800&family=Space+Grotesk:wght;300;400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -133,13 +133,47 @@
       animation: glowPulse 4s ease-in-out infinite;
     }
 
-    /* ========== SPLASH SCREEN ========== */
+    /* ========== SPLASH SCREEN - TECHY ANIMATION ========== */
     #splash {
       position: fixed; inset: 0; z-index: 9999; background: var(--bg-deep);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      /* Transition changed to handle slide up */
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
     }
-    #splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    
+    /* The Techy Out Class - Slides entire screen up */
+    #splash.techy-out {
+      transform: translateY(-100%);
+    }
+    
+    /* Inner content animation */
+    #splash.techy-out .splash-content {
+        opacity: 0; 
+        transform: scale(1.2); 
+        transition: all 0.5s ease;
+    }
+    
+    /* Grid rush effect */
+    #splash.techy-out .splash-grid {
+        transform: scale(1.5); opacity: 0;
+        transition: all 0.8s ease;
+    }
+
+    /* Glitch Animation for "System Ready" */
+    @keyframes glitch {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+    
+    .glitch-text {
+      animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+      color: var(--accent);
+    }
+
     .splash-bg { position: absolute; inset: 0; overflow: hidden; }
     .splash-grid {
       position: absolute; inset: 0;
@@ -1029,13 +1063,25 @@
       }
     }
     setTimeout(cycleMessages, 400);
+    
+    // Techy Out Animation
     setTimeout(() => {
-      splash.classList.add('hidden');
-      mainContent.style.opacity = '1';
-      mainContent.style.visibility = 'visible';
-      mainContent.style.transition = 'opacity 0.5s ease';
-      document.body.style.overflow = 'auto';
-    }, 3500);
+      // Change text to System Ready with Glitch
+      splashMessage.textContent = "System Ready";
+      splashMessage.classList.add('glitch-text');
+      
+      // After glitch effect, slide up the whole screen
+      setTimeout(() => {
+        splash.classList.add('techy-out');
+        
+        // Show main content
+        mainContent.style.opacity = '1';
+        mainContent.style.visibility = 'visible';
+        mainContent.style.transition = 'opacity 0.5s ease';
+        document.body.style.overflow = 'auto';
+        
+      }, 800);
+    }, 3000);
 
     // Theme Toggle
     const modeToggle = document.getElementById('modeToggle');
@@ -1084,13 +1130,11 @@
     });
 
     function animateCursor() {
-      // Dot follows instantly
       dotX += (mouseX - dotX);
       dotY += (mouseY - dotY);
       cursorDot.style.left = `${dotX}px`;
       cursorDot.style.top = `${dotY}px`;
 
-      // Glow follows with delay (lerp)
       glowX += (mouseX - glowX) * 0.15;
       glowY += (mouseY - glowY) * 0.15;
       cursorGlow.style.left = `${glowX}px`;
