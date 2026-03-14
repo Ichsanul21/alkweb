@@ -464,11 +464,12 @@ export default function AdminLayout({ children, title }) {
                     color: #e2e8f0;
                     font-size: 14px;
                     font-family: inherit;
-                    transition: border-color 0.2s;
+                    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
                 }
                 .admin-input:focus {
                     outline: none;
-                    border-color: #00E5FF;
+                    border-color: rgba(0, 229, 255, 0.5);
+                    box-shadow: 0 0 15px rgba(0, 229, 255, 0.08);
                 }
                 .admin-input::placeholder { color: #475569; }
 

@@ -210,3 +210,23 @@ footer { padding: clamp(60px, 10vw, 100px) 5vw 40px; background: var(--bg-deep);
     form .btn { align-self: center !important; }
     .process-item { display: flex !important; flex-direction: column !important; align-items: center !important; }
 }
+
+/* ── Unified Form Styles ── */
+input:focus, textarea:focus, select:focus {
+    outline: none !important;
+}
+
+.premium-input {
+    transition: border-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.premium-input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 10px 20px -10px rgba(0, 229, 255, 0.2);
+}
+
+html.light .premium-input:focus {
+    box-shadow: 0 10px 20px -10px rgba(0, 113, 227, 0.15);
+}
+

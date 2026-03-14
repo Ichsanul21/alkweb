@@ -551,30 +551,30 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         <form onSubmit={handleContact} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                             {flash?.success && <div style={{ padding: '12px 20px', borderRadius: 10, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', fontSize: 14 }}>{flash.success}</div>}
                             
-                            <input type="text" className="hover-trigger" placeholder={i.form_name} value={contactForm.data.name} onChange={e => contactForm.setData('name', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                            <input type="text" className="hover-trigger premium-input" placeholder={i.form_name} value={contactForm.data.name} onChange={e => contactForm.setData('name', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                             {contactForm.errors.name && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.name}</span>}
                             
-                            <input type="email" className="hover-trigger" placeholder={i.form_email} value={contactForm.data.email} onChange={e => contactForm.setData('email', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                            <input type="email" className="hover-trigger premium-input" placeholder={i.form_email} value={contactForm.data.email} onChange={e => contactForm.setData('email', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                             {contactForm.errors.email && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.email}</span>}
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                                 <div>
-                                    <input type="text" className="hover-trigger" placeholder={i.form_wa} value={contactForm.data.whatsapp_number} onChange={e => contactForm.setData('whatsapp_number', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    <input type="text" className="hover-trigger premium-input" placeholder={i.form_wa} value={contactForm.data.whatsapp_number} onChange={e => contactForm.setData('whatsapp_number', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                                     {contactForm.errors.whatsapp_number && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.whatsapp_number}</span>}
                                 </div>
                                 <div>
-                                    <input type="text" className="hover-trigger" placeholder={i.form_company} value={contactForm.data.company_name} onChange={e => contactForm.setData('company_name', e.target.value)} style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    <input type="text" className="hover-trigger premium-input" placeholder={i.form_company} value={contactForm.data.company_name} onChange={e => contactForm.setData('company_name', e.target.value)} style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                                     {contactForm.errors.company_name && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.company_name}</span>}
                                 </div>
                             </div>
 
                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                                 <div>
-                                    <input type="text" className="hover-trigger" placeholder={i.form_country} value={contactForm.data.country} onChange={e => contactForm.setData('country', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    <input type="text" className="hover-trigger premium-input" placeholder={i.form_country} value={contactForm.data.country} onChange={e => contactForm.setData('country', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                                     {contactForm.errors.country && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.country}</span>}
                                 </div>
                                 <div>
-                                    <input type="text" className="hover-trigger" placeholder={i.form_city} value={contactForm.data.city} onChange={e => contactForm.setData('city', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    <input type="text" className="hover-trigger premium-input" placeholder={i.form_city} value={contactForm.data.city} onChange={e => contactForm.setData('city', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                                     {contactForm.errors.city && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.city}</span>}
                                 </div>
                             </div>
@@ -589,11 +589,11 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                 value={contactForm.data.service_type}
                                 onChange={(val) => contactForm.setData('service_type', val)}
                                 placeholder={i.form_service}
-                                className="hover-trigger"
+                                className="hover-trigger premium-input"
                             />
                             {contactForm.errors.service_type && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.service_type}</span>}
                             
-                            <textarea className="hover-trigger" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
+                            <textarea className="hover-trigger premium-input" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
                             {contactForm.errors.message && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.message}</span>}
                             
                             <div className="footer-reveal" style={{ opacity: 0, transform: 'translateY(40px)' }}>

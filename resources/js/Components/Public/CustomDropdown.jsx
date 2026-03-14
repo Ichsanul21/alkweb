@@ -24,9 +24,29 @@ export default function CustomDropdown({ options, value, onChange, placeholder, 
     const selectedOption = options.find(o => o.value === value);
 
     return (
-        <div className={`custom-dropdown ${className}`} ref={dropdownRef} style={{ position: 'relative', width: '100%' }}>
+        <div 
+            className={`custom-dropdown ${className}`} 
+            ref={dropdownRef} 
+            tabIndex={0}
+            style={{ position: 'relative', width: '100%', outline: 'none' }}
+            onFocus={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 229, 255, 0.05)';
+                e.currentTarget.querySelector('.dropdown-trigger').style.borderColor = 'var(--accent)';
+            }}
+            onBlur={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.querySelector('.dropdown-trigger').style.borderColor = 'var(--border-glass)';
+            }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle();
+                }
+            }}
+        >
             <div 
                 onClick={toggle}
+                className="dropdown-trigger"
                 style={{
                     background: 'transparent',
                     border: 'none',
@@ -38,7 +58,8 @@ export default function CustomDropdown({ options, value, onChange, placeholder, 
                     cursor: 'pointer',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    transition: 'border-color 0.3s'
                 }}
             >
                 <span>{selectedOption ? selectedOption.label : placeholder}</span>
