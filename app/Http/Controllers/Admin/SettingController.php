@@ -39,6 +39,8 @@ class SettingController extends Controller
             }
         }
 
+        Setting::clearCache();
+
         return redirect()->back()->with('success', 'Settings updated successfully.');
     }
 

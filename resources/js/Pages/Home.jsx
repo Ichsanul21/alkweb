@@ -436,7 +436,11 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     {statistics.map(stat => (
                         <div key={stat.id}>
                             <div className="stat-val font-brand counter" data-target={stat.value} data-suffix={stat.suffix}>0</div>
-                            <div className="stat-label" dangerouslySetInnerHTML={{ __html: (lang === 'id' ? stat.label_id : stat.label_en).replace(/\n/g, '<br>') }} />
+                            <div className="stat-label">
+                                {(lang === 'id' ? stat.label_id : stat.label_en).split('\n').map((line, idx, arr) => (
+                                    <span key={idx}>{line}{idx < arr.length - 1 && <br />}</span>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </section>

@@ -11,4 +11,21 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+                        return 'vendor_react';
+                    }
+                    if (id.includes('node_modules/@inertiajs/')) {
+                        return 'vendor_inertia';
+                    }
+                    if (id.includes('node_modules/chart.js/') || id.includes('node_modules/react-chartjs-2/')) {
+                        return 'vendor_chartjs';
+                    }
+                },
+            },
+        },
+    },
 });

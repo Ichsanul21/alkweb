@@ -24,8 +24,24 @@ class Setting extends Model
 
     public static function getGroup(string $group): array
     {
-        return static::where('group', $group)
-            ->pluck('value', 'key')
-            ->toArray();
+        return cache()->remember("settings.{$group}", 60 * 60, function () use ($group) {
+            return static::where('group', $group)
+                ->pluck('value', 'key')
+                ->toArray();
+        });
+    }
+
+    /**
+     * Clear cached settings. Call after any settings update.
+     */
+    public static function clearCache(string $group = null): void
+    {
+        if ($group) {
+            cache()->forget("settings.{$group}");
+        } else {
+            foreach (['general', 'social', 'seo'] as $g) {
+                cache()->forget("settings.{$g}");
+            }
+        }
     }
 }

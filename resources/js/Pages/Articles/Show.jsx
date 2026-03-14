@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
+import DOMPurify from 'dompurify';
 
 export default function ArticleShow({ article, related }) {
     return (
@@ -48,7 +49,7 @@ export default function ArticleShow({ article, related }) {
                         </div>
 
                     {/* Article Content */}
-                    <article className="prose" dangerouslySetInnerHTML={{ __html: article.content_en }} style={{ color: 'var(--text-primary)', fontSize: 17, lineHeight: 1.8 }} />
+                    <article className="prose" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content_en || '') }} style={{ color: 'var(--text-primary)', fontSize: 17, lineHeight: 1.8 }} />
                 </div>
             </section>
 

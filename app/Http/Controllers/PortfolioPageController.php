@@ -14,6 +14,7 @@ class PortfolioPageController extends Controller
         $portfolios = Portfolio::published()
             ->ordered()
             ->when($request->category, fn($q, $cat) => $q->where('category', $cat))
+            ->select(['id', 'title_en', 'title_id', 'slug', 'description_en', 'description_id', 'featured_image', 'category', 'is_featured', 'sort_order'])
             ->paginate(9);
 
         $categories = Portfolio::published()
@@ -39,6 +40,7 @@ class PortfolioPageController extends Controller
         $related = Portfolio::published()
             ->where('id', '!=', $portfolio->id)
             ->where('category', $portfolio->category)
+            ->select(['id', 'title_en', 'title_id', 'slug', 'description_en', 'description_id', 'featured_image', 'category'])
             ->limit(3)
             ->get();
 

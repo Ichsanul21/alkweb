@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
+import DOMPurify from 'dompurify';
 
 export default function PortfolioShow({ portfolio, related }) {
     return (
@@ -41,7 +42,7 @@ export default function PortfolioShow({ portfolio, related }) {
 
                     {/* Content */}
                     {portfolio.content_en && (
-                        <div className="prose" dangerouslySetInnerHTML={{ __html: portfolio.content_en }} style={{ color: 'var(--text-primary)', fontSize: 16, lineHeight: 1.8 }} />
+                        <div className="prose" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(portfolio.content_en || '') }} style={{ color: 'var(--text-primary)', fontSize: 16, lineHeight: 1.8 }} />
                     )}
 
                     {/* Gallery */}

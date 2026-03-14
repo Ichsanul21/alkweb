@@ -25,9 +25,6 @@ class DashboardController extends Controller
             'new_contacts' => Contact::new()->count(),
         ];
 
-        $recentContacts = Contact::latest()->take(5)->get();
-        $recentArticles = Article::with('author')->latest()->take(5)->get();
-
         // Contacts by month (last 6 months)
         $contactsByMonth = Contact::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as count')
             ->where('created_at', '>=', now()->subMonths(6))
@@ -48,12 +45,13 @@ class DashboardController extends Controller
 
         return Inertia::render('Admin/Dashboard', [
             'stats' => $stats,
-            'recentContacts' => $recentContacts,
-            'recentArticles' => $recentArticles,
-            'contactsByMonth' => $contactsByMonth,
+            'recentContacts' => fn () => Contact::latest()->take(5)->get(['id', 'name', 'email', 'status', 'created_at']),
+            'recentArticles' => fn () => Article::with('author:id,name')
+                ->latest()->take(5)->get(['id', 'title_en', 'title_id', 'slug', 'status', 'author_id', 'published_at']),
+            'contactsByMonth' => Inertia::lazy(fn () => $contactsByMonth),
             'todayVisitors' => $todayVisitors,
             'totalVisitors' => $totalVisitors,
-            'visitorsByMonth' => $visitorsByMonth,
+            'visitorsByMonth' => Inertia::lazy(fn () => $visitorsByMonth),
         ]);
     }
 }

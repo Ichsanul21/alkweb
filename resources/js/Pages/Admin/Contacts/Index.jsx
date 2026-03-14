@@ -91,7 +91,7 @@ export default function ContactIndex({ contacts, statusCounts, filters }) {
                 <div className="pagination">
                     {contacts.links.map((link, i) => (
                         <span key={i}>
-                            {link.url ? <Link href={link.url} className={link.active ? 'active' : ''} dangerouslySetInnerHTML={{ __html: link.label }} /> : <span dangerouslySetInnerHTML={{ __html: link.label }} style={{ opacity: 0.4 }} />}
+                            {link.url ? <Link href={link.url} preserveScroll preserveState className={link.active ? 'active' : ''}>{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</Link> : <span style={{ opacity: 0.4 }}>{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</span>}
                         </span>
                     ))}
                 </div>

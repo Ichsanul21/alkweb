@@ -1,6 +1,7 @@
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Bar } from 'react-chartjs-2';
+import Skeleton from '@/Components/Skeleton';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -15,7 +16,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default function Dashboard({ stats, recentContacts, recentArticles, contactsByMonth, todayVisitors, totalVisitors, visitorsByMonth }) {
-    const chartData = {
+    const contactsLoaded = Array.isArray(contactsByMonth);
+    const visitorsLoaded = Array.isArray(visitorsByMonth);
+    const recentLoaded = Array.isArray(recentContacts);
+
+    const chartData = contactsLoaded ? {
         labels: contactsByMonth.map((c) => months[c.month - 1] + ' ' + c.year),
         datasets: [
             {
@@ -27,21 +32,21 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                 borderRadius: 6,
             },
         ],
-    };
+    } : null;
 
-    const visitorChartData = {
-        labels: (visitorsByMonth || []).map((v) => months[v.month - 1] + ' ' + v.year),
+    const visitorChartData = visitorsLoaded ? {
+        labels: visitorsByMonth.map((v) => months[v.month - 1] + ' ' + v.year),
         datasets: [
             {
                 label: 'Visitors',
-                data: (visitorsByMonth || []).map((v) => v.count),
+                data: visitorsByMonth.map((v) => v.count),
                 backgroundColor: 'rgba(16, 185, 129, 0.3)',
                 borderColor: '#10b981',
                 borderWidth: 1,
                 borderRadius: 6,
             },
         ],
-    };
+    } : null;
 
     const chartOptions = {
         responsive: true,
@@ -97,7 +102,9 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                     <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: '#e2e8f0' }}>
                         Contact Submissions
                     </h3>
-                    {contactsByMonth.length > 0 ? (
+                    {!contactsLoaded ? (
+                        <Skeleton.Chart height={200} />
+                    ) : contactsByMonth.length > 0 ? (
                         <Bar data={chartData} options={chartOptions} />
                     ) : (
                         <p style={{ color: '#475569', fontSize: 14 }}>No data yet</p>
@@ -109,7 +116,9 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                     <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: '#e2e8f0' }}>
                         Unique Visitors
                     </h3>
-                    {visitorsByMonth && visitorsByMonth.length > 0 ? (
+                    {!visitorsLoaded ? (
+                        <Skeleton.Chart height={200} />
+                    ) : visitorsByMonth.length > 0 ? (
                         <Bar data={visitorChartData} options={chartOptions} />
                     ) : (
                         <p style={{ color: '#475569', fontSize: 14 }}>No visitor data yet</p>
@@ -124,7 +133,17 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#e2e8f0' }}>Recent Contacts</h3>
                         <Link href="/admin/contacts" className="admin-btn admin-btn-secondary admin-btn-sm">View All</Link>
                     </div>
-                    {recentContacts.map((contact) => (
+                    {!recentLoaded ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <div key={i} style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ flex: 1 }}>
+                                    <Skeleton width="40%" height={14} style={{ marginBottom: 6 }} />
+                                    <Skeleton width="55%" height={12} />
+                                </div>
+                                <Skeleton width={70} height={22} borderRadius={50} />
+                            </div>
+                        ))
+                    ) : recentContacts.map((contact) => (
                         <div key={contact.id} style={{
                             padding: '12px 0',
                             borderBottom: '1px solid rgba(255,255,255,0.04)',

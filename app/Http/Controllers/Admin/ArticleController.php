@@ -15,6 +15,9 @@ class ArticleController extends Controller
     {
         $articles = Article::query()
             ->with('author:id,name')
+            ->when(!$request->user()->hasRole('Admin'), function ($q) use ($request) {
+                $q->where('author_id', $request->user()->id);
+            })
             ->when($request->search, fn($q, $s) => $q->where('title_en', 'like', "%{$s}%")->orWhere('title_id', 'like', "%{$s}%"))
             ->when($request->status, fn($q, $s) => $q->where('status', $s))
             ->when($request->category, fn($q, $c) => $q->where('category', $c))
@@ -77,8 +80,17 @@ class ArticleController extends Controller
             ->with('success', 'Article created successfully.');
     }
 
+    private function authorizeOwnership(Article $article)
+    {
+        if (!auth()->user()->hasRole('Admin') && $article->author_id !== auth()->id()) {
+            abort(403, 'Unauthorized action. You can only manage your own articles.');
+        }
+    }
+
     public function edit(Article $article): Response
     {
+        $this->authorizeOwnership($article);
+
         return Inertia::render('Admin/Articles/Form', [
             'article' => $article,
         ]);
@@ -86,6 +98,8 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     {
+        $this->authorizeOwnership($article);
+
         $validated = $request->validate([
             'title_en' => 'required|string|max:255',
             'title_id' => 'required|string|max:255',
@@ -116,6 +130,8 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
+        $this->authorizeOwnership($article);
+
         $article->delete();
 
         return redirect()->route('admin.articles.index')

@@ -111,7 +111,6 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                 </table>
             </div>
 
-            {/* Pagination */}
             {portfolios.links && portfolios.links.length > 3 && (
                 <div className="pagination">
                     {portfolios.links.map((link, i) => (
@@ -119,11 +118,12 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                             {link.url ? (
                                 <Link
                                     href={link.url}
+                                    preserveScroll
+                                    preserveState
                                     className={link.active ? 'active' : ''}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                />
+                                >{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</Link>
                             ) : (
-                                <span dangerouslySetInnerHTML={{ __html: link.label }} style={{ opacity: 0.4 }} />
+                                <span style={{ opacity: 0.4 }}>{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</span>
                             )}
                         </span>
                     ))}

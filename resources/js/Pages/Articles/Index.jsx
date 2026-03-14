@@ -1,10 +1,23 @@
 import { Head, Link, router } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
-import { useState, useMemo } from 'react';
+import Skeleton from '@/Components/Skeleton';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function ArticlesIndex({ articles, categories, filters }) {
     const lang = document.documentElement.lang || 'en';
     const [search, setSearch] = useState(filters.search || '');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const startLoading = () => setLoading(true);
+        const stopLoading = () => setLoading(false);
+        router.on('start', startLoading);
+        router.on('finish', stopLoading);
+        return () => {
+            router.off('start', startLoading);
+            router.off('finish', stopLoading);
+        };
+    }, []);
 
     const featuredArticle = useMemo(() => {
         return articles.data.find(a => a.is_featured) || articles.data[0];
@@ -68,7 +81,9 @@ export default function ArticlesIndex({ articles, categories, filters }) {
 
                 {/* Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 'clamp(16px, 3vw, 30px)' }}>
-                    {articles.data.length === 0 ? (
+                    {loading ? (
+                        Array.from({ length: 6 }).map((_, i) => <Skeleton.Card key={i} />)
+                    ) : articles.data.length === 0 ? (
                         <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 20px', color: 'var(--text-secondary)' }}>
                             <p style={{ fontSize: 18 }}>{lang === 'id' ? 'Tidak ada artikel ditemukan.' : 'No articles found.'}</p>
                         </div>
@@ -107,9 +122,9 @@ export default function ArticlesIndex({ articles, categories, filters }) {
                         {articles.links.map((link, i) => (
                             <span key={i}>
                                 {link.url ? (
-                                    <Link href={link.url} style={{ padding: '8px 14px', borderRadius: 8, background: link.active ? 'var(--accent)' : 'rgba(255,255,255,0.05)', color: link.active ? 'var(--bg-deep)' : 'var(--text-secondary)', textDecoration: 'none', fontSize: 14, fontWeight: link.active ? 700 : 400 }} dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    <Link href={link.url} preserveScroll preserveState style={{ padding: '8px 14px', borderRadius: 8, background: link.active ? 'var(--accent)' : 'rgba(255,255,255,0.05)', color: link.active ? 'var(--bg-deep)' : 'var(--text-secondary)', textDecoration: 'none', fontSize: 14, fontWeight: link.active ? 700 : 400 }}>{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</Link>
                                 ) : (
-                                    <span style={{ padding: '8px 14px', opacity: 0.3, fontSize: 14 }} dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    <span style={{ padding: '8px 14px', opacity: 0.3, fontSize: 14 }}>{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</span>
                                 )}
                             </span>
                         ))}

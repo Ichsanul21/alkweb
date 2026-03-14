@@ -11,7 +11,7 @@ class UploadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,svg|max:5120',
+            'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp|max:5120',
         ]);
 
         $path = $request->file('file')->store('uploads', 'public');
@@ -25,11 +25,18 @@ class UploadController extends Controller
     public function destroy(Request $request)
     {
         $request->validate([
-            'path' => 'required|string',
+            'path' => ['required', 'string', 'regex:/^uploads\//'],
         ]);
 
-        if (Storage::disk('public')->exists($request->path)) {
-            Storage::disk('public')->delete($request->path);
+        $path = $request->path;
+
+        // Prevent path traversal
+        if (str_contains($path, '..') || str_contains($path, "\0")) {
+            abort(403, 'Invalid path.');
+        }
+
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
 
         return response()->json(['success' => true]);

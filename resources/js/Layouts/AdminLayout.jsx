@@ -122,8 +122,6 @@ export default function AdminLayout({ children, title }) {
             </div>
 
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
-
                 .admin-layout {
                     display: flex;
                     min-height: 100vh;
@@ -595,6 +593,11 @@ export default function AdminLayout({ children, title }) {
                     font-size: 18px;
                     color: #94a3b8;
                     margin-bottom: 8px;
+                }
+
+                @keyframes skeleton-shimmer {
+                    0% { background-position: 200% 0; }
+                    100% { background-position: -200% 0; }
                 }
             `}</style>
         </div>

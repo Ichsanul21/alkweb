@@ -113,7 +113,9 @@ export default function Index({ visitors }) {
                         {visitors.links.map((link, i) => (
                             <Link
                                 key={i}
-                                href={link.url}
+                                href={link.url || '#'}
+                                preserveScroll
+                                preserveState
                                 className={link.active ? 'active' : ''}
                                 style={{
                                     padding: '8px 16px',
@@ -126,8 +128,7 @@ export default function Index({ visitors }) {
                                     pointerEvents: link.url ? 'auto' : 'none',
                                     opacity: link.url ? 1 : 0.5
                                 }}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
+                            >{link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»')}</Link>
                         ))}
                     </div>
                 )}

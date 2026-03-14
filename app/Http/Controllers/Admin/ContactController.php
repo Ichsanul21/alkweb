@@ -63,22 +63,24 @@ class ContactController extends Controller
 
     public function export()
     {
-        $contacts = Contact::all();
-
         $csv = "Name,Email,Phone,Company,Message,Status,Source,Created At\n";
-        foreach ($contacts as $contact) {
-            $csv .= sprintf(
-                '"%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
-                str_replace('"', '""', $contact->name),
-                $contact->email,
-                $contact->phone ?? '',
-                str_replace('"', '""', $contact->company ?? ''),
-                str_replace('"', '""', $contact->message),
-                $contact->status,
-                $contact->source,
-                $contact->created_at->format('Y-m-d H:i'),
-            );
-        }
+        Contact::select(['name', 'email', 'phone', 'company', 'message', 'status', 'source', 'created_at'])
+            ->orderBy('created_at')
+            ->chunk(200, function ($contacts) use (&$csv) {
+                foreach ($contacts as $contact) {
+                    $csv .= sprintf(
+                        '"%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
+                        str_replace('"', '""', $contact->name),
+                        $contact->email,
+                        $contact->phone ?? '',
+                        str_replace('"', '""', $contact->company ?? ''),
+                        str_replace('"', '""', $contact->message),
+                        $contact->status,
+                        $contact->source,
+                        $contact->created_at->format('Y-m-d H:i'),
+                    );
+                }
+            });
 
         return response($csv, 200, [
             'Content-Type' => 'text/csv',

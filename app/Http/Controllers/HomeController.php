@@ -16,11 +16,14 @@ class HomeController extends Controller
     public function index(): Response
     {
         return Inertia::render('Home', [
-            'statistics' => Statistic::visible()->get(),
-            'services' => Service::visible()->get(),
-            'portfolios' => Portfolio::published()->featured()->ordered()->get(),
-            'articles' => \App\Models\Article::published()
+            'statistics' => fn () => Statistic::visible()->get(),
+            'services' => fn () => Service::visible()->get(),
+            'portfolios' => fn () => Portfolio::published()->featured()->ordered()
+                ->select(['id', 'title_en', 'title_id', 'slug', 'description_en', 'description_id', 'featured_image', 'category'])
+                ->get(),
+            'articles' => fn () => \App\Models\Article::published()
                 ->with('author:id,name')
+                ->select(['id', 'title_en', 'title_id', 'slug', 'excerpt_en', 'excerpt_id', 'featured_image', 'category', 'author_id', 'published_at'])
                 ->ordered()
                 ->limit(3)
                 ->get(),

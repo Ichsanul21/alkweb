@@ -14,7 +14,8 @@ class UserController extends Controller
 {
     public function index(): Response
     {
-        $users = User::with('roles')
+        $users = User::select(['id', 'name', 'email', 'created_at'])
+            ->with('roles:id,name')
             ->orderByDesc('created_at')
             ->paginate(15);
 

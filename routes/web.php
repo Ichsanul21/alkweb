@@ -15,18 +15,22 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public Routes ───────────────────────────────────────────────
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
+Route::middleware([\App\Http\Middleware\LogVisitor::class])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/contact', [HomeController::class, 'submitContact'])
+        ->middleware('throttle:5,1')
+        ->name('contact.submit');
 
-// SEO
-Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
-Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+    // SEO
+    Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+    Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 
-Route::get('/portfolio', [PortfolioPageController::class, 'index'])->name('portfolio.index');
-Route::get('/portfolio/{slug}', [PortfolioPageController::class, 'show'])->name('portfolio.show');
+    Route::get('/portfolio', [PortfolioPageController::class, 'index'])->name('portfolio.index');
+    Route::get('/portfolio/{slug}', [PortfolioPageController::class, 'show'])->name('portfolio.show');
 
-Route::get('/articles', [ArticlePageController::class, 'index'])->name('articles.index');
-Route::get('/articles/{slug}', [ArticlePageController::class, 'show'])->name('articles.show');
+    Route::get('/articles', [ArticlePageController::class, 'index'])->name('articles.index');
+    Route::get('/articles/{slug}', [ArticlePageController::class, 'show'])->name('articles.show');
+});
 
 // ── Admin Routes ────────────────────────────────────────────────
 Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureUserHasAdminAccess::class])
