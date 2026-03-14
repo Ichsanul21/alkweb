@@ -11,7 +11,7 @@ export default function InquirySuccessModal({ isOpen, onClose, formData, lang })
     if (!isMounted || !isOpen) return null;
 
     const generateWhatsAppLink = () => {
-        const phone = '628114002131'; // Example Alenkosa WhatsApp number
+        const phone = '6281258070694'; // Alenkosa WhatsApp number
         
         const messageEn = `Hello Alenkosa Team,\n\nI'm ${formData.name} from ${formData.company_name || 'N/A'}, located in ${formData.city}, ${formData.country}. I'm interested in your ${formData.service_type} services.\n\nMy Message: ${formData.message}\n\nLooking forward to hearing from you!`;
         const messageId = `Halo Tim Alenkosa,\n\nSaya ${formData.name} dari ${formData.company_name || 'N/A'}, berlokasi di ${formData.city}, ${formData.country}. Saya tertarik dengan layanan ${formData.service_type}.\n\nPesan Saya: ${formData.message}\n\nMohon kabari ya! Terima kasih.`;

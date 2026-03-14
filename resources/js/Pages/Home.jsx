@@ -170,16 +170,19 @@ export default function Home({ statistics, services, portfolios, articles, setti
             // Services title reveal
             gsap.to('.svc-header', { scrollTrigger: { trigger: '#services', start: 'top 80%' }, y: '0%', duration: 1, stagger: 0.1, ease: 'power4.out' });
 
-            // Portfolio horizontal scroll
-            const portWrap = document.querySelector('.portfolio-wrapper');
-            if (portWrap) {
-                const getScrollAmount = () => -(portWrap.scrollWidth - window.innerWidth + window.innerWidth * 0.1);
-                const tween = gsap.to(portWrap, { x: getScrollAmount, duration: 3, ease: 'none' });
-                ScrollTrigger.create({
-                    trigger: '#portfolio', start: 'top top', end: () => `+=${getScrollAmount() * -1}`,
-                    pin: true, animation: tween, scrub: 1, invalidateOnRefresh: true, pinSpacing: true
-                });
-            }
+            // Horizontal Scroll for Portfolio & Articles
+            ['portfolio', 'articles'].forEach(id => {
+                const section = document.getElementById(id);
+                const wrapper = section?.querySelector('.horizontal-wrapper');
+                if (wrapper) {
+                    const getScrollAmount = () => -(wrapper.scrollWidth - window.innerWidth + window.innerWidth * 0.1);
+                    const tween = gsap.to(wrapper, { x: getScrollAmount, duration: 3, ease: 'none' });
+                    ScrollTrigger.create({
+                        trigger: `#${id}`, start: 'top top', end: () => `+=${wrapper.scrollWidth - window.innerWidth}`,
+                        pin: true, animation: tween, scrub: 1, invalidateOnRefresh: true, pinSpacing: true
+                    });
+                }
+            });
 
             // Process steps
             gsap.utils.toArray('.step').forEach(step => {
@@ -488,7 +491,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.port_tag}</div>
                     <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.port_title}</h2>
                     <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
-                        <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
+                        <div className="portfolio-wrapper horizontal-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                             {portfolios.map(p => (
                                 <Link key={p.id} href={`/portfolio/${p.slug}`} className="portfolio-card hover-trigger">
                                     <img src={p.featured_image} className="portfolio-img" alt={p.title_en} />
@@ -520,7 +523,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.art_title}</h2>
                         
                         <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
-                            <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
+                            <div className="portfolio-wrapper horizontal-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                                 {articles.map(article => (
                                     <Link key={article.id} href={`/articles/${article.slug}`} className="portfolio-card hover-trigger">
                                         {article.featured_image && (
