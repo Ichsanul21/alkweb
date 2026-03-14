@@ -8,7 +8,10 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import Highlight from '@tiptap/extension-highlight';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
+import { SparklesIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
 
 function Toolbar({ editor }) {
     if (!editor) return null;
@@ -50,6 +53,12 @@ function WysiwygEditor({ content, onChange, placeholder }) {
         onUpdate: ({ editor }) => onChange(editor.getHTML()),
     });
 
+    useEffect(() => {
+        if (editor && content !== editor.getHTML()) {
+            editor.commands.setContent(content || '');
+        }
+    }, [content, editor]);
+
     return (
         <div className="wysiwyg-wrap">
             <Toolbar editor={editor} />
@@ -61,6 +70,7 @@ function WysiwygEditor({ content, onChange, placeholder }) {
 export default function PortfolioForm({ portfolio }) {
     const isEditing = !!portfolio;
     const [activeTab, setActiveTab] = useState('en');
+    const [isTranslating, setIsTranslating] = useState(false);
 
     const { data, setData, post, put, processing, errors } = useForm({
         title_en: portfolio?.title_en || '',
@@ -77,6 +87,45 @@ export default function PortfolioForm({ portfolio }) {
         sort_order: portfolio?.sort_order || 0,
         status: portfolio?.status || 'draft',
     });
+
+    const handleAutoTranslate = async () => {
+        if (!data.title_id && !data.description_id && !data.content_id) {
+            toast.error('Isi konten bahasa Indonesia dulu ya!');
+            return;
+        }
+
+        setIsTranslating(true);
+        const t = toast.loading('Sedang menerjemahkan...');
+
+        try {
+            const fields = [
+                { key: 'title', text: data.title_id },
+                { key: 'description', text: data.description_id },
+                { key: 'content', text: data.content_id },
+            ];
+
+            const results = {};
+            for (const field of fields) {
+                if (field.text) {
+                    const response = await axios.post('/admin/translate', {
+                        text: field.text,
+                        from: 'id',
+                        to: 'en'
+                    });
+                    results[`${field.key}_en`] = response.data.translated;
+                }
+            }
+
+            setData(prev => ({ ...prev, ...results }));
+            setActiveTab('en');
+            toast.success('Berhasil diterjemahkan!', { id: t });
+        } catch (error) {
+            console.error(error);
+            toast.error('Gagal menerjemahkan', { id: t });
+        } finally {
+            setIsTranslating(false);
+        }
+    };
 
     const [tagInput, setTagInput] = useState('');
 
@@ -108,12 +157,36 @@ export default function PortfolioForm({ portfolio }) {
                     <div>
                         <div className="admin-card">
                             {/* Language Tabs */}
-                            <div className="tab-buttons">
-                                <button type="button" className={`tab-btn ${activeTab === 'en' ? 'active' : ''}`} onClick={() => setActiveTab('en')}>
-                                    🇬🇧 English
-                                </button>
-                                <button type="button" className={`tab-btn ${activeTab === 'id' ? 'active' : ''}`} onClick={() => setActiveTab('id')}>
-                                    🇮🇩 Indonesian
+                            <div className="tab-buttons" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', gap: 4 }}>
+                                    <button type="button" className={`tab-btn ${activeTab === 'en' ? 'active' : ''}`} onClick={() => setActiveTab('en')}>
+                                        🇬🇧 English
+                                    </button>
+                                    <button type="button" className={`tab-btn ${activeTab === 'id' ? 'active' : ''}`} onClick={() => setActiveTab('id')}>
+                                        🇮🇩 Indonesian
+                                    </button>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    onClick={handleAutoTranslate} 
+                                    disabled={isTranslating}
+                                    style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: 6, 
+                                        fontSize: 12, 
+                                        fontWeight: 600, 
+                                        color: '#00E5FF', 
+                                        background: 'rgba(0,229,255,0.1)', 
+                                        border: '1px solid rgba(0,229,255,0.2)', 
+                                        padding: '4px 10px', 
+                                        borderRadius: 8,
+                                        cursor: 'pointer',
+                                        opacity: isTranslating ? 0.5 : 1
+                                    }}
+                                >
+                                    <SparklesIcon style={{ width: 14, height: 14 }} />
+                                    {isTranslating ? 'Translating...' : 'Magic Translate (ID → EN)'}
                                 </button>
                             </div>
 
