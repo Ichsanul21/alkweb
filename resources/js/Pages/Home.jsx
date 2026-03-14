@@ -4,6 +4,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import '../../css/public.css';
+import CustomDropdown from '@/Components/Public/CustomDropdown';
+import InquirySuccessModal from '@/Components/Public/InquirySuccessModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +40,7 @@ const t = {
         form_name: 'Full Name', form_email: 'Email Address', form_project: 'Tell us about your project...',
         form_submit: 'Send Inquiry',
         form_wa: 'WhatsApp Number', form_company: 'Company Name', form_service: 'Select Service',
+        form_country: 'Country', form_city: 'City',
     },
     id: {
         nav_services: 'Layanan', nav_portfolio: 'Portofolio', nav_process: 'Proses', nav_close: 'Tutup',
@@ -52,13 +55,14 @@ const t = {
         svc_tag: '// Keahlian', svc_title_1: 'Solusi', svc_title_2: 'Teknologi Menyeluruh.',
         svc_desc: 'Kami tidak sekadar menulis baris kode. Kami memadukan kecerdasan buatan, jaringan infrastruktur yang presisi, dan analisis data mendalam untuk merevolusi proses bisnis Anda di era digital.',
         port_tag: '// Karya Unggulan', port_title: 'Proyek Terpilih.',
+        svc_1: 'Perangkat Lunak Cerdas', svc_2: 'Infrastruktur Pintar', svc_3: 'Media Digital', svc_4: 'Lainnya',
         proc_tag: '// Misi Kami', proc_title: 'Cara Kami Mendorong Perubahan.',
         proc_1_title: 'Produk Cerdas',
         proc_1_desc: 'Menciptakan dan mengomersialkan Intelligent Products yang didukung AI/ML, IoT dan real-time data analytics untuk solusi bisnis.',
         proc_2_title: 'Infrastruktur Pintar',
         proc_2_desc: 'Mengimplementasikan Smart Infrastructure dan Intelligent Systems berskala besar yang efisien dan andal bagi enterprise.',
         proc_3_title: 'Kemitraan Strategis',
-        proc_3_desc: 'Membangun kemitraan strategis dan tim ahli yang berkomitmen pada continuous innovation, data security, dan dampak nyata bagi pertumbuhan bisnis.',
+        proc_3_desc: 'Membangun kemitran strategis dan tim ahli yang berkomitmen pada continuous innovation, data security, dan dampak nyata bagi pertumbuhan bisnis.',
         art_tag: '// Wawasan', art_title: 'Artikel Terbaru.', art_read: 'Baca Artikel', art_more: 'Lihat Semua Artikel',
         marquee: 'AYO BANGUN SESUATU YANG HEBAT \u2022 ',
         footer_cta_title: 'Siap berinovasi?',
@@ -66,6 +70,7 @@ const t = {
         form_name: 'Nama Lengkap', form_email: 'Alamat Email', form_project: 'Ceritakan tentang proyek Anda...',
         form_submit: 'Kirim Pertanyaan',
         form_wa: 'Nomor WhatsApp', form_company: 'Nama Perusahaan', form_service: 'Pilih Layanan',
+        form_country: 'Negara', form_city: 'Kota',
     },
 };
 
@@ -85,19 +90,21 @@ export default function Home({ statistics, services, portfolios, articles, setti
     const { flash } = usePage().props;
     const i = t[lang]; // current language
 
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
     // Contact form
-    const contactForm = useForm({ name: '', email: '', whatsapp_number: '', company_name: '', service_type: 'Other', message: '' });
+    const contactForm = useForm({ 
+        name: '', email: '', whatsapp_number: '', 
+        company_name: '', country: '', city: '',
+        service_type: '', message: '' 
+    });
+
     const handleContact = (e) => {
         e.preventDefault();
         contactForm.post('/contact', {
             preserveScroll: true,
             onSuccess: () => {
-                const waPhone = '6281258070694';
-                const text = `Halo, Tim Alenkosa,\n\nNama: ${contactForm.data.name}\nPerusahaan: ${contactForm.data.company_name || '-'}\nLayanan: ${contactForm.data.service_type}\nEmail: ${contactForm.data.email}\n\nPesan:\n${contactForm.data.message}`;
-                const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`;
-                
-                window.open(waUrl, '_blank');
-                contactForm.reset();
+                setIsSuccessModalOpen(true);
             }
         });
     };
@@ -345,10 +352,17 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     <a href="#services" className="hover-trigger" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>{i.nav_services}</a>
                     <a href="#portfolio" className="hover-trigger" onClick={(e) => { e.preventDefault(); scrollTo('portfolio'); }}>{i.nav_portfolio}</a>
                     <a href="#process" className="hover-trigger" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>{i.nav_process}</a>
-                    <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleLang(); }} style={{ fontWeight: 700, fontSize: 12, letterSpacing: 1, border: '1px solid var(--border-glass)', borderRadius: 100, padding: '4px 10px' }}>
-                        {lang === 'en' ? 'ID' : 'EN'}
-                    </a>
-                    <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleTheme(); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24 }}>
+                    
+                    <CustomDropdown 
+                        options={[{ value: 'en', label: 'EN' }, { value: 'id', label: 'ID' }]}
+                        value={lang}
+                        onChange={(val) => setLang(val)}
+                        placeholder="LANG"
+                        className="hover-trigger"
+                        style={{ width: 80, fontSize: 12 }}
+                    />
+
+                    <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleTheme(); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, marginLeft: 20 }}>
                         {isLight ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                         ) : (
@@ -554,13 +568,29 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                 </div>
                             </div>
 
-                            <select className="hover-trigger" value={contactForm.data.service_type} onChange={e => contactForm.setData('service_type', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', appearance: 'none', cursor: 'pointer' }}>
-                                <option value="Other" style={{ background: '#020c15' }}>{i.form_service}</option>
-                                <option value="Intelligent Software" style={{ background: '#020c15' }}>Intelligent Software</option>
-                                <option value="Smart Infrastructure" style={{ background: '#020c15' }}>Smart Infrastructure</option>
-                                <option value="Digital Media" style={{ background: '#020c15' }}>Digital Media</option>
-                                <option value="Other" style={{ background: '#020c15' }}>Other</option>
-                            </select>
+                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                                <div>
+                                    <input type="text" className="hover-trigger" placeholder={i.form_country} value={contactForm.data.country} onChange={e => contactForm.setData('country', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    {contactForm.errors.country && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.country}</span>}
+                                </div>
+                                <div>
+                                    <input type="text" className="hover-trigger" placeholder={i.form_city} value={contactForm.data.city} onChange={e => contactForm.setData('city', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    {contactForm.errors.city && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.city}</span>}
+                                </div>
+                            </div>
+
+                            <CustomDropdown 
+                                options={[
+                                    { value: 'Intelligent Software', label: lang === 'id' ? 'Perangkat Lunak Cerdas' : 'Intelligent Software' },
+                                    { value: 'Smart Infrastructure', label: lang === 'id' ? 'Infrastruktur Pintar' : 'Smart Infrastructure' },
+                                    { value: 'Digital Media', label: lang === 'id' ? 'Media Digital' : 'Digital Media' },
+                                    { value: 'Other', label: lang === 'id' ? 'Lainnya' : 'Other' },
+                                ]}
+                                value={contactForm.data.service_type}
+                                onChange={(val) => contactForm.setData('service_type', val)}
+                                placeholder={i.form_service}
+                                className="hover-trigger"
+                            />
                             {contactForm.errors.service_type && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.service_type}</span>}
                             
                             <textarea className="hover-trigger" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
@@ -582,6 +612,16 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         </div>
                     </div>
                 </footer>
+
+                <InquirySuccessModal 
+                    isOpen={isSuccessModalOpen} 
+                    onClose={() => {
+                        setIsSuccessModalOpen(false);
+                        contactForm.reset();
+                    }}
+                    formData={contactForm.data}
+                    lang={lang}
+                />
             </main>
         </div>
     );

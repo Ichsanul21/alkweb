@@ -39,6 +39,8 @@ class HomeController extends Controller
             'email' => 'required|email|max:255',
             'whatsapp_number' => 'required|string|max:255',
             'company_name' => 'nullable|string|max:255',
+            'country' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
             'service_type' => 'required|string|in:Intelligent Software,Smart Infrastructure,Digital Media,Other',
             'message' => 'required|string|max:2000',
         ]);

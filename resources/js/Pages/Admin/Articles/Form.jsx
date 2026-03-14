@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import CustomDropdown from '@/Components/Public/CustomDropdown';
 
 function Toolbar({ editor }) {
     if (!editor) return null;
@@ -68,6 +69,7 @@ export default function ArticleForm({ article }) {
     const isEditing = !!article;
     const [activeTab, setActiveTab] = useState('en');
     const [isTranslating, setIsTranslating] = useState(false);
+    const [isGeneratingTags, setIsGeneratingTags] = useState(false);
     const [seoOpen, setSeoOpen] = useState(false);
     const [tagInput, setTagInput] = useState('');
 
@@ -280,10 +282,15 @@ export default function ArticleForm({ article }) {
                         <div className="admin-card">
                             <div className="form-group">
                                 <label className="admin-label">Status</label>
-                                <select className="admin-select" style={{ width: '100%' }} value={data.status} onChange={(e) => setData('status', e.target.value)}>
-                                    <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
-                                </select>
+                                <CustomDropdown 
+                                    options={[
+                                        { value: 'draft', label: 'Draft' },
+                                        { value: 'published', label: 'Published' }
+                                    ]}
+                                    value={data.status}
+                                    onChange={(val) => setData('status', val)}
+                                    placeholder="Select Status"
+                                />
                             </div>
                             <div className="form-group">
                                 <label className="admin-label">Publish Date</label>
