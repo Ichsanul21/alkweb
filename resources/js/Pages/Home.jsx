@@ -490,13 +490,24 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
                         <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                             {portfolios.map(p => (
-                                <a key={p.id} href={`/portfolio/${p.slug}`} className="portfolio-card hover-trigger">
+                                <Link key={p.id} href={`/portfolio/${p.slug}`} className="portfolio-card hover-trigger">
                                     <img src={p.featured_image} className="portfolio-img" alt={p.title_en} />
-                                    <div className="portfolio-info">
-                                        <div className="tag" style={{ marginBottom: 8 }}>{p.category}</div>
-                                        <h3 className="font-syne">{lang === 'id' ? p.title_id : p.title_en}</h3>
+                                    {p.is_featured && (
+                                        <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, zIndex: 2 }}>FEATURED</div>
+                                    )}
+                                    <div className="portfolio-info" style={{ right: 'clamp(15px, 4vw, 40px)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                            <div>
+                                                <div className="tag" style={{ marginBottom: 8 }}>{p.category}</div>
+                                                <h3 className="font-syne">{lang === 'id' ? p.title_id : p.title_en}</h3>
+                                            </div>
+                                            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                {p.view_count || 0}
+                                            </div>
+                                        </div>
                                     </div>
-                                </a>
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -509,40 +520,39 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.art_title}</h2>
                         
                         <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
-                            <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)', display: 'flex', gap: 24 }}>
+                            <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                                 {articles.map(article => (
-                                    <Link key={article.id} href={`/articles/${article.slug}`} style={{ flex: '0 0 320px', textDecoration: 'none', color: 'inherit', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-glass)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.3s, border-color 0.3s', display: 'flex', flexDirection: 'column' }} className="hover-trigger" onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'var(--accent)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'var(--border-glass)'; }}>
+                                    <Link key={article.id} href={`/articles/${article.slug}`} className="portfolio-card hover-trigger">
                                         {article.featured_image && (
-                                            <div style={{ position: 'relative' }}>
-                                                <img src={article.featured_image} alt={lang === 'id' ? article.title_id : article.title_en} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-                                                {article.is_featured && (
-                                                    <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>FEATURED</div>
-                                                )}
-                                            </div>
+                                            <img src={article.featured_image} className="portfolio-img" alt={lang === 'id' ? article.title_id : article.title_en} />
                                         )}
-                                        <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                            <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-                                                {article.category && <span style={{ padding: '3px 10px', border: '1px solid var(--border-glass)', borderRadius: 50, fontSize: 11, color: 'var(--accent)' }}>{article.category}</span>}
-                                                <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
-                                                    {article.published_at && new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                </span>
-                                                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                        {article.is_featured && (
+                                            <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, zIndex: 2 }}>FEATURED</div>
+                                        )}
+                                        <div className="portfolio-info" style={{ right: 'clamp(15px, 4vw, 40px)' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                                <div>
+                                                    <div className="tag" style={{ marginBottom: 8 }}>{article.category}</div>
+                                                    <h3 className="font-syne">{lang === 'id' ? article.title_id : article.title_en}</h3>
+                                                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 8 }}>
+                                                        {article.published_at && new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                        {article.author && ` • By ${article.author.name}`}
+                                                    </div>
+                                                </div>
+                                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                                     {article.view_count || 0}
-                                                </span>
+                                                </div>
                                             </div>
-                                            <h3 className="font-syne" style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 10, lineHeight: 1.3 }}>{lang === 'id' ? article.title_id : article.title_en}</h3>
-                                            {article.excerpt_en && <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: 16 }}>{lang === 'id' ? (article.excerpt_id || article.excerpt_en) : article.excerpt_en}</p>}
-                                            {article.author && <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 'auto' }}>By {article.author.name}</p>}
                                         </div>
                                     </Link>
                                 ))}
-                                {/* View More Link at the end of scroll */}
-                                <Link href="/articles" style={{ flex: '0 0 200px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 16, textDecoration: 'none', border: '1px dashed var(--border-glass)', borderRadius: 16, background: 'rgba(255,255,255,0.01)' }} className="hover-trigger">
-                                    <div style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid var(--accent)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--accent)' }}>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                {/* View More Link */}
+                                <Link href="/articles" className="portfolio-card hover-trigger" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 20, border: '1px dashed var(--border-glass)', background: 'rgba(255,255,255,0.01)' }}>
+                                    <div style={{ width: 64, height: 64, borderRadius: '50%', border: '1px solid var(--accent)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--accent)' }}>
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                     </div>
-                                    <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{i.art_more}</span>
+                                    <span className="font-syne" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: 2 }}>{i.art_more}</span>
                                 </Link>
                             </div>
                         </div>
