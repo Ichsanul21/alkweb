@@ -74,7 +74,7 @@ export default function ArticlesIndex({ articles, categories, filters }) {
                         </div>
                         {featuredArticle.featured_image && (
                             <div style={{ minHeight: 300 }}>
-                                <img src={featuredArticle.featured_image} alt={featuredArticle.title_en} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={featuredArticle.featured_image} alt={featuredArticle.title_en} width="800" height="600" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
                         )}
                     </Link>
@@ -92,7 +92,7 @@ export default function ArticlesIndex({ articles, categories, filters }) {
                         <Link key={article.id} href={`/articles/${article.slug}`} style={{ textDecoration: 'none', color: 'inherit', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-glass)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.3s, border-color 0.3s', display: 'flex', flexDirection: 'column' }} className="hover-trigger" onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'var(--accent)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'var(--border-glass)'; }}>
                             {article.featured_image && (
                                 <div style={{ position: 'relative' }}>
-                                    <img src={article.featured_image} alt={lang === 'id' ? article.title_id : article.title_en} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
+                                    <img src={article.featured_image} alt={lang === 'id' ? article.title_id : article.title_en} width="600" height="400" loading="lazy" style={{ width: '100%', height: 200, objectFit: 'cover' }} />
                                     {article.is_featured && (
                                         <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>FEATURED</div>
                                     )}

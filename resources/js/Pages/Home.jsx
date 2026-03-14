@@ -1,5 +1,5 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -120,7 +120,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
     }, []);
 
     // ── GSAP + Lenis init ──────────────────────────────────────
-    useEffect(() => {
+    useLayoutEffect(() => {
         const ctx = gsap.context(() => {
             // Lenis
             const lenis = new Lenis({ smoothWheel: true, duration: 1.2 });
@@ -426,7 +426,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         </div>
                     </div>
                     <div className="hero-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070" className="hero-img" alt="Tech" />
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070" className="hero-img" alt="Tech" width="2070" height="1380" fetchPriority="high" />
                     </div>
                 </section>
 
@@ -472,7 +472,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     {[1, 2, 3].map(n => (
                         <div key={n} className="process-item step">
                             <div className="process-img-col">
-                                <img src={processImages[n - 1]} className="process-img p-img" alt="" />
+                                <img src={processImages[n - 1]} className="process-img p-img" alt="" loading="lazy" width="800" height="600" />
                             </div>
                             <div className="p-text">
                                 <div className="process-num-large font-brand">{String(n).padStart(2, '0')}</div>
@@ -514,7 +514,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         <div className="portfolio-wrapper horizontal-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                             {portfolios.map(p => (
                                 <Link key={p.id} href={`/portfolio/${p.slug}`} className="portfolio-card hover-trigger">
-                                    <img src={p.featured_image} className="portfolio-img" alt={p.title_en} />
+                                    <img src={p.featured_image} className="portfolio-img" alt={p.title_en} loading="lazy" width="1200" height="800" />
                                     {p.is_featured && (
                                         <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, zIndex: 2 }}>FEATURED</div>
                                     )}
@@ -547,7 +547,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                 {articles.map(article => (
                                     <Link key={article.id} href={`/articles/${article.slug}`} className="portfolio-card hover-trigger">
                                         {article.featured_image && (
-                                            <img src={article.featured_image} className="portfolio-img" alt={lang === 'id' ? article.title_id : article.title_en} />
+                                            <img src={article.featured_image} className="portfolio-img" alt={lang === 'id' ? article.title_id : article.title_en} loading="lazy" width="1200" height="800" />
                                         )}
                                         {article.is_featured && (
                                             <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, zIndex: 2 }}>FEATURED</div>

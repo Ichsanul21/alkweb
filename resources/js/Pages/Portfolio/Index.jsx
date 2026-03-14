@@ -47,7 +47,7 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                 {/* Featured Showcase */}
                 {!filters.category && featuredProject && (
                     <Link href={`/portfolio/${featuredProject.slug}`} className="hover-trigger" style={{ display: 'block', position: 'relative', borderRadius: 24, overflow: 'hidden', height: 'clamp(350px, 60vh, 600px)', marginBottom: 60, background: '#000' }}>
-                        <img src={featuredProject.featured_image} alt={lang === 'id' ? featuredProject.title_id : featuredProject.title_en} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
+                        <img src={featuredProject.featured_image} alt={lang === 'id' ? featuredProject.title_id : featuredProject.title_en} width="1200" height="800" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
                         <div style={{ position: 'absolute', bottom: 'clamp(30px, 6vw, 60px)', left: 'clamp(30px, 6vw, 60px)', right: 'clamp(30px, 6vw, 60px)', zIndex: 2 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                                 <span style={{ background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, fontFamily: "'JetBrains Mono', monospace" }}>FEATURED PROJECT</span>
@@ -76,7 +76,7 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                         </div>
                     ) : (filters.category ? portfolios.data : otherProjects).map(p => (
                         <Link key={p.id} href={`/portfolio/${p.slug}`} style={{ textDecoration: 'none', position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#000', display: 'block', height: 'clamp(280px, 45vh, 450px)' }} className="hover-trigger">
-                            <img src={p.featured_image} alt={lang === 'id' ? p.title_id : p.title_en} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, transition: 'opacity 0.4s, transform 0.4s' }} onMouseOver={(e) => { e.target.style.opacity = 0.3; e.target.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.target.style.opacity = 0.6; e.target.style.transform = 'scale(1)'; }} />
+                            <img src={p.featured_image} alt={lang === 'id' ? p.title_id : p.title_en} width="800" height="600" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, transition: 'opacity 0.4s, transform 0.4s' }} onMouseOver={(e) => { e.target.style.opacity = 0.3; e.target.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.target.style.opacity = 0.6; e.target.style.transform = 'scale(1)'; }} />
                             {p.is_featured && (
                                 <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, zIndex: 2 }}>FEATURED</div>
                             )}
