@@ -53,7 +53,7 @@ class LogVisitor
                     'timezone' => $location && $location['timeZone'] !== '-' ? $location['timeZone'] : null,
                     'visited_date' => $date,
                 ]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Silently drop if tracking fails (e.g. IP2Location DB missing, permission errors)
                 \Illuminate\Support\Facades\Log::error('Visitor tracking failed: ' . $e->getMessage());
             }
