@@ -253,21 +253,41 @@ export default function Home({ statistics, services, portfolios, articles, setti
         return () => ctx.revert();
     }, []);
 
-    // Custom cursor
+    // Custom cursor with delegation
     useEffect(() => {
         const cursor = cursorRef.current;
         if (!cursor) return;
-        const onMove = (e) => gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power2.out' });
-        document.addEventListener('mousemove', onMove);
 
-        const triggers = document.querySelectorAll('.hover-trigger, a, button, input, textarea');
-        const onEnter = () => document.body.classList.add('cursor-hover');
-        const onLeave = () => document.body.classList.remove('cursor-hover');
-        triggers.forEach(t => { t.addEventListener('mouseenter', onEnter); t.addEventListener('mouseleave', onLeave); });
+        const onMove = (e) => {
+            gsap.to(cursor, { 
+                x: e.clientX, 
+                y: e.clientY, 
+                duration: 0.15, 
+                ease: 'power2.out' 
+            });
+        };
+
+        const onOver = (e) => {
+            if (e.target.closest('.hover-trigger, a, button, input, textarea')) {
+                document.body.classList.add('cursor-hover');
+            }
+        };
+
+        const onOut = (e) => {
+            if (e.target.closest('.hover-trigger, a, button, input, textarea')) {
+                document.body.classList.remove('cursor-hover');
+            }
+        };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseover', onOver);
+        document.addEventListener('mouseout', onOut);
 
         return () => {
             document.removeEventListener('mousemove', onMove);
-            triggers.forEach(t => { t.removeEventListener('mouseenter', onEnter); t.removeEventListener('mouseleave', onLeave); });
+            document.removeEventListener('mouseover', onOver);
+            document.removeEventListener('mouseout', onOut);
+            document.body.classList.remove('cursor-hover');
         };
     }, []);
 
