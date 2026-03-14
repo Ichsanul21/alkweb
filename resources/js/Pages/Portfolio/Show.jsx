@@ -3,6 +3,8 @@ import PublicLayout from '@/Layouts/PublicLayout';
 import DOMPurify from 'dompurify';
 
 export default function PortfolioShow({ portfolio, related }) {
+    const lang = document.documentElement.lang || 'en';
+
     return (
         <PublicLayout>
             <Head>
