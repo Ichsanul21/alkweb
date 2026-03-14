@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use hisorange\BrowserDetect\Parser as Browser;
 
 class LogVisitor
 {
@@ -23,8 +22,18 @@ class LogVisitor
         if (! \App\Models\Visitor::where('ip_address', $ip)->where('visited_date', $date)->exists()) {
             try {
                 // Get Browser & Device Info
-                $browser = Browser::browserName();
-                $deviceType = Browser::isMobile() ? 'Mobile' : (Browser::isTablet() ? 'Tablet' : 'Desktop');
+                $userAgent = $request->userAgent();
+                $browser = 'Unknown';
+                if (preg_match('/(Chrome|CriOS|Edg|Firefox|Safari|Opera|MSIE|Trident)/i', $userAgent, $matches)) {
+                    $browser = $matches[1];
+                }
+                
+                $deviceType = 'Desktop';
+                if (preg_match('/(Mobile|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini)/i', $userAgent)) {
+                    $deviceType = 'Mobile';
+                } elseif (preg_match('/(Tablet|iPad)/i', $userAgent)) {
+                    $deviceType = 'Tablet';
+                }
                 
                 // Get Location Info
                 $location = class_exists(\Ip2location\IP2LocationLaravel\Facade\IP2LocationLaravel::class) 
