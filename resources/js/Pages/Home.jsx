@@ -200,6 +200,12 @@ export default function Home({ statistics, services, portfolios, articles, setti
             // Process heading
             gsap.from('#process > h2', { scrollTrigger: { trigger: '#process', start: 'top 85%' }, y: 40, opacity: 0, duration: 1, ease: 'power2.out' });
 
+            // Footer reveal
+            gsap.to('.footer-reveal', {
+                scrollTrigger: { trigger: 'footer', start: 'top 85%' },
+                y: 0, opacity: 1, duration: 1, ease: 'power2.out'
+            });
+
             // Nav scroll progress
             gsap.to(document.documentElement, {
                 '--scroll-percent': '100%', ease: 'none',
@@ -560,9 +566,11 @@ export default function Home({ statistics, services, portfolios, articles, setti
                             <textarea className="hover-trigger" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
                             {contactForm.errors.message && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.message}</span>}
                             
-                            <button type="submit" className="btn hover-trigger" disabled={contactForm.processing} style={{ alignSelf: 'flex-start', marginTop: 16 }}>
-                                {contactForm.processing ? '...' : i.form_submit}
-                            </button>
+                            <div className="footer-reveal" style={{ opacity: 0, transform: 'translateY(40px)' }}>
+                                <button type="submit" className="btn hover-trigger" disabled={contactForm.processing} style={{ alignSelf: 'flex-start', marginTop: 16 }}>
+                                    {contactForm.processing ? '...' : i.form_submit}
+                                </button>
+                            </div>
                         </form>
                     </div>
 

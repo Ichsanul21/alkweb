@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureUserHasAdminAc
             Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
             Route::get('visitors', \App\Http\Controllers\Admin\VisitorController::class . '@index')->name('visitors.index');
             Route::post('translate', [\App\Http\Controllers\Admin\AutoTranslateController::class, 'translate'])->name('translate');
+            Route::post('generate-tags', [\App\Http\Controllers\Admin\AutoTranslateController::class, 'generateTags'])->name('generate-tags');
             Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
             Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
             Route::put('settings/statistics/{statistic}', [SettingController::class, 'updateStatistic'])->name('settings.statistic.update');

@@ -139,6 +139,35 @@ export default function ArticleForm({ article }) {
         }
     };
 
+    const handleGenerateTags = async () => {
+        const hasContent = data.title_id || data.title_en || data.content_id || data.content_en;
+        if (!hasContent) {
+            toast.error('Isi konten dulu ya untuk generate tag!');
+            return;
+        }
+
+        setIsGeneratingTags(true);
+        const t = toast.loading('Sedang meracik tag...');
+
+        try {
+            const response = await axios.post('/admin/generate-tags', {
+                title: data.title_id || data.title_en,
+                excerpt: data.excerpt_id || data.excerpt_en,
+                content: data.content_id || data.content_en
+            });
+
+            if (response.data.tags) {
+                setData('tags', response.data.tags);
+                toast.success('Tag berhasil digenerate!', { id: t });
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Gagal generate tag', { id: t });
+        } finally {
+            setIsGeneratingTags(false);
+        }
+    };
+
     const addTag = () => {
         if (tagInput.trim() && !data.tags.includes(tagInput.trim())) {
             setData('tags', [...data.tags, tagInput.trim()]);
@@ -290,7 +319,28 @@ export default function ArticleForm({ article }) {
                                 <input className="admin-input" value={data.category} onChange={(e) => setData('category', e.target.value)} />
                             </div>
                             <div className="form-group">
-                                <label className="admin-label">Tags</label>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                                    <label className="admin-label" style={{ marginBottom: 0 }}>Tags</label>
+                                    <button 
+                                        type="button" 
+                                        onClick={handleGenerateTags}
+                                        disabled={isGeneratingTags}
+                                        style={{ 
+                                            fontSize: 11, 
+                                            color: '#00E5FF', 
+                                            background: 'transparent', 
+                                            border: 'none', 
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 4,
+                                            opacity: isGeneratingTags ? 0.5 : 1
+                                        }}
+                                    >
+                                        <SparklesIcon style={{ width: 12, height: 12 }} />
+                                        {isGeneratingTags ? 'Generating...' : 'Auto-Generate Tags'}
+                                    </button>
+                                </div>
                                 <div style={{ display: 'flex', gap: 8 }}>
                                     <input className="admin-input" value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())} placeholder="Add tag..." />
                                     <button type="button" className="admin-btn admin-btn-secondary admin-btn-sm" onClick={addTag}>+</button>
