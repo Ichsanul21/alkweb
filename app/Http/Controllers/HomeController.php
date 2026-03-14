@@ -22,7 +22,7 @@ class HomeController extends Controller
             'articles' => \App\Models\Article::published()
                 ->with('author:id,name')
                 ->ordered()
-                ->limit(7)
+                ->limit(3)
                 ->get(),
             'settings' => [
                 'general' => Setting::getGroup('general'),
