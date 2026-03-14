@@ -88,9 +88,12 @@ export default function PortfolioForm({ portfolio }) {
         status: portfolio?.status || 'draft',
     });
 
-    const handleAutoTranslate = async () => {
-        if (!data.title_id && !data.description_id && !data.content_id) {
-            toast.error('Isi konten bahasa Indonesia dulu ya!');
+    const handleAutoTranslate = async (from = 'id', to = 'en') => {
+        const sourceFields = from === 'id' ? ['title_id', 'description_id', 'content_id'] : ['title_en', 'description_en', 'content_en'];
+        const hasContent = sourceFields.some(f => data[f]);
+
+        if (!hasContent) {
+            toast.error(`Isi konten bahasa ${from === 'id' ? 'Indonesia' : 'Inggris'} dulu ya!`);
             return;
         }
 
@@ -98,26 +101,31 @@ export default function PortfolioForm({ portfolio }) {
         const t = toast.loading('Sedang menerjemahkan...');
 
         try {
-            const fields = [
-                { key: 'title', text: data.title_id },
-                { key: 'description', text: data.description_id },
-                { key: 'content', text: data.content_id },
-            ];
+            const fieldMap = from === 'id' 
+                ? [
+                    { src: 'title_id', dest: 'title_en' },
+                    { src: 'description_id', dest: 'description_en' },
+                    { src: 'content_id', dest: 'content_en' },
+                  ]
+                : [
+                    { src: 'title_en', dest: 'title_id' },
+                    { src: 'description_en', dest: 'description_id' },
+                    { src: 'content_en', dest: 'content_id' },
+                  ];
 
             const results = {};
-            for (const field of fields) {
-                if (field.text) {
+            for (const field of fieldMap) {
+                if (data[field.src]) {
                     const response = await axios.post('/admin/translate', {
-                        text: field.text,
-                        from: 'id',
-                        to: 'en'
+                        text: data[field.src],
+                        from: from,
+                        to: to
                     });
-                    results[`${field.key}_en`] = response.data.translated;
+                    results[field.dest] = response.data.translated;
                 }
             }
 
             setData(prev => ({ ...prev, ...results }));
-            setActiveTab('en');
             toast.success('Berhasil diterjemahkan!', { id: t });
         } catch (error) {
             console.error(error);
@@ -168,7 +176,7 @@ export default function PortfolioForm({ portfolio }) {
                                 </div>
                                 <button 
                                     type="button" 
-                                    onClick={handleAutoTranslate} 
+                                    onClick={() => handleAutoTranslate(activeTab === 'en' ? 'id' : 'en', activeTab)} 
                                     disabled={isTranslating}
                                     style={{ 
                                         display: 'flex', 
@@ -186,7 +194,7 @@ export default function PortfolioForm({ portfolio }) {
                                     }}
                                 >
                                     <SparklesIcon style={{ width: 14, height: 14 }} />
-                                    {isTranslating ? 'Translating...' : 'Magic Translate (ID → EN)'}
+                                    {isTranslating ? 'Translating...' : `Magic Translate (${activeTab === 'en' ? 'ID → EN' : 'EN → ID'})`}
                                 </button>
                             </div>
 
