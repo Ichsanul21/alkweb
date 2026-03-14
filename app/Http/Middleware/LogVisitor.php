@@ -18,9 +18,10 @@ class LogVisitor
         $ip = $request->ip();
         $date = now()->format('Y-m-d');
 
-        // Only log once per IP per day
-        if (! \App\Models\Visitor::where('ip_address', $ip)->where('visited_date', $date)->exists()) {
-            try {
+        try {
+            $visitor = \App\Models\Visitor::where('ip_address', $ip)->where('visited_date', $date)->first();
+
+            if (!$visitor) {
                 // Get Browser & Device Info
                 $userAgent = $request->userAgent();
                 $browser = 'Unknown';
@@ -52,11 +53,15 @@ class LogVisitor
                     'zipcode' => $location && $location['zipCode'] !== '-' ? $location['zipCode'] : null,
                     'timezone' => $location && $location['timeZone'] !== '-' ? $location['timeZone'] : null,
                     'visited_date' => $date,
+                    'last_seen_at' => now(),
                 ]);
-            } catch (\Throwable $e) {
-                // Silently drop if tracking fails (e.g. IP2Location DB missing, permission errors)
-                \Illuminate\Support\Facades\Log::error('Visitor tracking failed: ' . $e->getMessage());
+            } else {
+                // Update activity timestamp to track session duration
+                $visitor->update(['last_seen_at' => now()]);
             }
+        } catch (\Throwable $e) {
+            // Silently drop if tracking fails
+            \Illuminate\Support\Facades\Log::error('Visitor tracking failed: ' . $e->getMessage());
         }
 
         return $next($request);

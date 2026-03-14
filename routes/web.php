@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureUserHasAdminAc
         // System Settings - Admin Only
         Route::middleware(['role:Admin'])->group(function () {
             Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+            Route::get('visitors', \App\Http\Controllers\Admin\VisitorController::class . '@index')->name('visitors.index');
             Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
             Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
             Route::put('settings/statistics/{statistic}', [SettingController::class, 'updateStatistic'])->name('settings.statistic.update');

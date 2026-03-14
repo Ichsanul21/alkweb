@@ -11,10 +11,12 @@ import {
     UsersIcon,
     Cog6ToothIcon,
     ArrowLeftOnRectangleIcon,
+    GlobeAmericasIcon,
 } from '@heroicons/react/24/outline';
 
 const navigation = [
     { name: 'Dashboard', href: '/admin', icon: HomeIcon, routeKey: 'admin.dashboard', roles: ['Admin', 'Editor', 'Author'] },
+    { name: 'Visitors', href: '/admin/visitors', icon: GlobeAmericasIcon, routeKey: 'admin.visitors', roles: ['Admin'] },
     { name: 'Portfolios', href: '/admin/portfolios', icon: RectangleGroupIcon, routeKey: 'admin.portfolios', roles: ['Admin', 'Editor'] },
     { name: 'Articles', href: '/admin/articles', icon: DocumentTextIcon, routeKey: 'admin.articles', roles: ['Admin', 'Editor', 'Author'] },
     { name: 'Contacts', href: '/admin/contacts', icon: ChatBubbleLeftRightIcon, routeKey: 'admin.contacts', roles: ['Admin', 'Editor'] },

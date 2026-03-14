@@ -71,8 +71,15 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                     <div className="stat-label">Total Contacts</div>
                 </div>
                 <div className="stat-card">
-                    <div className="stat-value" style={{ color: '#10b981' }}>{todayVisitors}</div>
-                    <div className="stat-label">Visitors Today (Total: {totalVisitors})</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div>
+                            <div className="stat-value" style={{ color: '#10b981' }}>{todayVisitors}</div>
+                            <div className="stat-label">Visitors Today (Total: {totalVisitors})</div>
+                        </div>
+                        <Link href="/admin/visitors" className="admin-btn admin-btn-secondary admin-btn-sm" style={{ padding: '4px 8px' }}>
+                            Details
+                        </Link>
+                    </div>
                 </div>
             </div>
 

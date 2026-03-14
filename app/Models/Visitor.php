@@ -18,10 +18,12 @@ class Visitor extends Model
         'zipcode',
         'timezone',
         'visited_date',
+        'last_seen_at',
     ];
 
     protected $casts = [
         'visited_date' => 'date',
+        'last_seen_at' => 'datetime',
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
     ];
