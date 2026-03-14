@@ -9,34 +9,25 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
+    page: window.__INERTIA_PAGE__ 
+        ? JSON.parse(decodeURIComponent(escape(window.atob(window.__INERTIA_PAGE__))))
+        : undefined,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,
             import.meta.glob('./Pages/**/*.jsx'),
         ),
     setup({ el, App, props }) {
-        let pageData = props.initialPage;
-        
-        // Custom parser for Base64 injected string
-        if (!pageData && window.__INERTIA_PAGE__) {
-            try {
-                pageData = JSON.parse(decodeURIComponent(escape(window.atob(window.__INERTIA_PAGE__))));
-                
-                // Clear the variable after parsing so it doesn't linger in DOM memory easily
-                window.__INERTIA_PAGE__ = undefined;
-            } catch (e) {
-                console.error("Failed to parse Inertia page data.");
-            }
+        if (window.__INERTIA_PAGE__) {
+            window.__INERTIA_PAGE__ = undefined;
         }
 
-        const appProps = { ...props, initialPage: pageData };
-
         if (import.meta.env.SSR) {
-            hydrateRoot(el, <App {...appProps} />);
+            hydrateRoot(el, <App {...props} />);
             return;
         }
 
-        createRoot(el).render(<App {...appProps} />);
+        createRoot(el).render(<App {...props} />);
     },
     progress: {
         color: '#4B5563',
