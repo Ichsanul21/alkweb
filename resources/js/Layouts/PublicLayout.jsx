@@ -41,9 +41,9 @@ export default function PublicLayout({ children, title }) {
                     <Link href="/portfolio" className="hover-trigger" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500, fontSize: 14, textTransform: 'uppercase', letterSpacing: 1 }}>Portfolio</Link>
                     <Link href="/articles" className="hover-trigger" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500, fontSize: 14, textTransform: 'uppercase', letterSpacing: 1 }}>Articles</Link>
                     <Link href="/" className="hover-trigger" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500, fontSize: 14, textTransform: 'uppercase', letterSpacing: 1 }}>Home</Link>
-                    <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleLang(); }} style={{ fontWeight: 700, fontSize: 12, letterSpacing: 1, border: '1px solid var(--border-glass)', borderRadius: 100, padding: '4px 10px', color: 'var(--text-primary)', textDecoration: 'none' }}>
-                        {lang === 'en' ? 'ID' : 'EN'}
-                    </a>
+                    <div className="hover-trigger" onClick={toggleLang} style={{ cursor: 'pointer', fontSize: 13, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text-primary)', marginLeft: 10, opacity: 0.8, transition: 'opacity 0.3s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '1'} onMouseOut={(e) => e.currentTarget.style.opacity = '0.8'}>
+                        {lang.toUpperCase()}
+                    </div>
                     <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleTheme(); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, color: 'var(--text-primary)' }}>
                         {isLight ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>

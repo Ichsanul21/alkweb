@@ -378,14 +378,9 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     <a href="#portfolio" className="hover-trigger" onClick={(e) => { e.preventDefault(); scrollTo('portfolio'); }}>{i.nav_portfolio}</a>
                     <a href="#process" className="hover-trigger" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>{i.nav_process}</a>
                     
-                    <CustomDropdown 
-                        options={[{ value: 'en', label: 'EN' }, { value: 'id', label: 'ID' }]}
-                        value={lang}
-                        onChange={(val) => setLang(val)}
-                        placeholder="LANG"
-                        className="hover-trigger"
-                        style={{ width: 80, fontSize: 12 }}
-                    />
+                    <div className="hover-trigger" onClick={toggleLang} style={{ cursor: 'pointer', fontSize: 13, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text-primary)', marginLeft: 10, opacity: 0.8, transition: 'opacity 0.3s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '1'} onMouseOut={(e) => e.currentTarget.style.opacity = '0.8'}>
+                        {lang.toUpperCase()}
+                    </div>
 
                     <a href="#" className="hover-trigger" onClick={(e) => { e.preventDefault(); toggleTheme(); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, marginLeft: 20 }}>
                         {isLight ? (
