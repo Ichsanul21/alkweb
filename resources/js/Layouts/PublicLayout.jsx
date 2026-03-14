@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, Head } from '@inertiajs/react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import '../../css/public.css';
