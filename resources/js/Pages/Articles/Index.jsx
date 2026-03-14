@@ -1,21 +1,22 @@
 import { Head, Link, router } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import Skeleton from '@/Components/Skeleton';
+import useLanguage from '@/Hooks/useLanguage';
 import { useState, useMemo, useEffect } from 'react';
 
 export default function ArticlesIndex({ articles, categories, filters }) {
-    const lang = document.documentElement.lang || 'en';
+    const { lang } = useLanguage();
     const [search, setSearch] = useState(filters.search || '');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const startLoading = () => setLoading(true);
         const stopLoading = () => setLoading(false);
-        router.on('start', startLoading);
-        router.on('finish', stopLoading);
+        const removeStart = router.on('start', startLoading);
+        const removeFinish = router.on('finish', stopLoading);
         return () => {
-            router.off('start', startLoading);
-            router.off('finish', stopLoading);
+            removeStart();
+            removeFinish();
         };
     }, []);
 
@@ -56,7 +57,7 @@ export default function ArticlesIndex({ articles, categories, filters }) {
                         <div style={{ padding: 'clamp(24px, 5vw, 60px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
                                 <span style={{ background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, fontFamily: "'JetBrains Mono', monospace" }}>FEATURED</span>
-                                <span style={{ fontSize: 11, color: 'var(--accent)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{featuredArticle.category.toUpperCase()}</span>
+                                {featuredArticle.category && <span style={{ fontSize: 11, color: 'var(--accent)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{featuredArticle.category.toUpperCase()}</span>}
                             </div>
                             <h2 className="font-brand" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: 24 }}>{lang === 'id' ? featuredArticle.title_id : featuredArticle.title_en}</h2>
                             <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 32, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>

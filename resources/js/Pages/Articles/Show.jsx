@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import DOMPurify from 'dompurify';
+import useLanguage from '@/Hooks/useLanguage';
 
 export default function ArticleShow({ article, related }) {
-    const lang = document.documentElement.lang || 'en';
+    const { lang } = useLanguage();
 
     return (
         <PublicLayout>
@@ -44,11 +45,11 @@ export default function ArticleShow({ article, related }) {
                     )}
 
                     {/* Tags */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
-                            {article.tags.map(tag => (
-                                <span key={tag} style={{ padding: '5px 12px', border: '1px solid var(--border-glass)', borderRadius: 50, fontSize: 11, color: 'var(--text-secondary)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 600 }}>#{tag}</span>
-                            ))}
-                        </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
+                        {article.tags.map(tag => (
+                            <span key={tag} style={{ padding: '5px 12px', border: '1px solid var(--border-glass)', borderRadius: 50, fontSize: 11, color: 'var(--text-secondary)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 600 }}>#{tag}</span>
+                        ))}
+                    </div>
 
                     {/* Article Content */}
                     <article className="prose" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content_en || '') }} style={{ color: 'var(--text-primary)', fontSize: 17, lineHeight: 1.8 }} />

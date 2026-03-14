@@ -2,9 +2,10 @@ import { Link, usePage, Head } from '@inertiajs/react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import '../../css/public.css';
+import useLanguage from '@/Hooks/useLanguage';
 
 export default function PublicLayout({ children, title }) {
-    const [lang, setLang] = useState('en');
+    const { lang, toggleLang } = useLanguage();
     const [isLight, setIsLight] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const cursorRef = useRef(null);
@@ -12,7 +13,6 @@ export default function PublicLayout({ children, title }) {
     const toggleTheme = useCallback(() => {
         setIsLight(v => { const next = !v; document.documentElement.classList.toggle('light', next); return next; });
     }, []);
-    const toggleLang = useCallback(() => setLang(v => v === 'en' ? 'id' : 'en'), []);
     const toggleMenu = () => { setMenuOpen(v => { document.body.style.overflow = !v ? 'hidden' : ''; return !v; }); };
 
     useEffect(() => {

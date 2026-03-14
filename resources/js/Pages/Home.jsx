@@ -6,6 +6,7 @@ import Lenis from 'lenis';
 import '../../css/public.css';
 import CustomDropdown from '@/Components/Public/CustomDropdown';
 import InquirySuccessModal from '@/Components/Public/InquirySuccessModal';
+import useLanguage from '@/Hooks/useLanguage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,7 +82,7 @@ const processImages = [
 ];
 
 export default function Home({ statistics, services, portfolios, articles, settings }) {
-    const [lang, setLang] = useState('en');
+    const { lang, toggleLang } = useLanguage();
     const [isLight, setIsLight] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const mainRef = useRef(null);
@@ -117,8 +118,6 @@ export default function Home({ statistics, services, portfolios, articles, setti
             return next;
         });
     }, []);
-
-    const toggleLang = useCallback(() => setLang(v => v === 'en' ? 'id' : 'en'), []);
 
     // ── GSAP + Lenis init ──────────────────────────────────────
     useEffect(() => {

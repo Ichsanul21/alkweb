@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import DOMPurify from 'dompurify';
+import useLanguage from '@/Hooks/useLanguage';
 
 export default function PortfolioShow({ portfolio, related }) {
-    const lang = document.documentElement.lang || 'en';
+    const { lang } = useLanguage();
 
     return (
         <PublicLayout>
