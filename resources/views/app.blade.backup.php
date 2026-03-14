@@ -18,9 +18,6 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        <div id="app"></div>
-        <script>
-            window.__INERTIA_PAGE__ = '{{ base64_encode(json_encode($page)) }}';
-        </script>
+        @inertia
     </body>
 </html>

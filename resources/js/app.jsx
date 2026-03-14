@@ -15,12 +15,28 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.jsx'),
         ),
     setup({ el, App, props }) {
+        let pageData = props.initialPage;
+        
+        // Custom parser for Base64 injected string
+        if (!pageData && window.__INERTIA_PAGE__) {
+            try {
+                pageData = JSON.parse(decodeURIComponent(escape(window.atob(window.__INERTIA_PAGE__))));
+                
+                // Clear the variable after parsing so it doesn't linger in DOM memory easily
+                window.__INERTIA_PAGE__ = undefined;
+            } catch (e) {
+                console.error("Failed to parse Inertia page data.");
+            }
+        }
+
+        const appProps = { ...props, initialPage: pageData };
+
         if (import.meta.env.SSR) {
-            hydrateRoot(el, <App {...props} />);
+            hydrateRoot(el, <App {...appProps} />);
             return;
         }
 
-        createRoot(el).render(<App {...props} />);
+        createRoot(el).render(<App {...appProps} />);
     },
     progress: {
         color: '#4B5563',
