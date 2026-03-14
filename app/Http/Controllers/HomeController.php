@@ -21,8 +21,8 @@ class HomeController extends Controller
             'portfolios' => Portfolio::published()->featured()->ordered()->get(),
             'articles' => \App\Models\Article::published()
                 ->with('author:id,name')
-                ->latest('published_at')
-                ->limit(3)
+                ->ordered()
+                ->limit(7)
                 ->get(),
             'settings' => [
                 'general' => Setting::getGroup('general'),

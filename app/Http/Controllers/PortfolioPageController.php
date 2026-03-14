@@ -34,6 +34,8 @@ class PortfolioPageController extends Controller
     {
         $portfolio = Portfolio::published()->where('slug', $slug)->firstOrFail();
 
+        $portfolio->increment('view_count');
+
         $related = Portfolio::published()
             ->where('id', '!=', $portfolio->id)
             ->where('category', $portfolio->category)

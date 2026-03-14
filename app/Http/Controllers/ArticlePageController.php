@@ -39,6 +39,8 @@ class ArticlePageController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        $article->increment('view_count');
+
         $related = Article::published()
             ->where('id', '!=', $article->id)
             ->latest('published_at')

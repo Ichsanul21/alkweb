@@ -354,10 +354,22 @@ export default function PortfolioForm({ portfolio }) {
                                     ))}
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={data.is_featured} onChange={(e) => setData('is_featured', e.target.checked)} />
-                                    <span className="admin-label" style={{ margin: 0 }}>Featured Portfolio</span>
+                            {isEditing && (
+                                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', padding: '0 4px', marginBottom: 12 }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    View Count: <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{portfolio?.view_count || 0}</span>
+                                </div>
+                            )}
+                            <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                                <input 
+                                    type="checkbox" 
+                                    id="is_featured"
+                                    checked={data.is_featured} 
+                                    onChange={e => setData('is_featured', e.target.checked)}
+                                    style={{ width: 18, height: 18, cursor: 'pointer', accentColor: 'var(--accent)' }}
+                                />
+                                <label htmlFor="is_featured" style={{ cursor: 'pointer', fontSize: 14, fontWeight: 600, color: data.is_featured ? 'var(--accent)' : 'inherit' }}>
+                                    Featured Portfolio
                                 </label>
                             </div>
                             <div className="form-group">

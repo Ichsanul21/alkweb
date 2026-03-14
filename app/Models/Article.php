@@ -11,12 +11,13 @@ class Article extends Model
     protected $fillable = [
         'author_id', 'title_en', 'title_id', 'slug', 'excerpt_en', 'excerpt_id',
         'content_en', 'content_id', 'featured_image', 'category', 'tags',
-        'meta_title', 'meta_description', 'og_image', 'status', 'published_at',
+        'meta_title', 'meta_description', 'og_image', 'is_featured', 'status', 'view_count', 'published_at',
     ];
 
     protected $casts = [
         'tags' => 'array',
         'published_at' => 'datetime',
+        'is_featured' => 'boolean',
     ];
 
     protected static function booted(): void
@@ -62,6 +63,7 @@ class Article extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderByDesc('published_at');
+        return $query->orderByDesc('is_featured')
+                     ->orderByDesc('published_at');
     }
 }

@@ -15,10 +15,12 @@ class DashboardController extends Controller
     public function index(): Response
     {
         $stats = [
-            'total_portfolios' => Portfolio::count(),
-            'published_portfolios' => Portfolio::published()->count(),
             'total_articles' => Article::count(),
             'published_articles' => Article::published()->count(),
+            'article_views' => Article::sum('view_count'),
+            'total_portfolios' => Portfolio::count(),
+            'published_portfolios' => Portfolio::published()->count(),
+            'portfolio_views' => Portfolio::sum('view_count'),
             'total_contacts' => Contact::count(),
             'new_contacts' => Contact::new()->count(),
         ];

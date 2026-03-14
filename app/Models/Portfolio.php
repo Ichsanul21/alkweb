@@ -10,7 +10,7 @@ class Portfolio extends Model
     protected $fillable = [
         'title_en', 'title_id', 'slug', 'description_en', 'description_id',
         'content_en', 'content_id', 'category', 'tags', 'featured_image',
-        'gallery', 'is_featured', 'sort_order', 'status',
+        'gallery', 'is_featured', 'sort_order', 'status', 'view_count',
     ];
 
     protected $casts = [
@@ -61,6 +61,8 @@ class Portfolio extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('sort_order')->orderByDesc('created_at');
+        return $query->orderByDesc('is_featured')
+                     ->orderBy('sort_order')
+                     ->orderByDesc('created_at');
     }
 }

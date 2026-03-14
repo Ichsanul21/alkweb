@@ -87,6 +87,7 @@ export default function ArticleForm({ article }) {
         meta_description: article?.meta_description || '',
         og_image: article?.og_image || '',
         status: article?.status || 'draft',
+        is_featured: article?.is_featured || false,
         published_at: article?.published_at ? article.published_at.slice(0, 16) : '',
     });
 
@@ -292,6 +293,24 @@ export default function ArticleForm({ article }) {
                                     placeholder="Select Status"
                                 />
                             </div>
+                            <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                                <input 
+                                    type="checkbox" 
+                                    id="is_featured"
+                                    checked={data.is_featured} 
+                                    onChange={e => setData('is_featured', e.target.checked)}
+                                    style={{ width: 18, height: 18, cursor: 'pointer', accentColor: 'var(--accent)' }}
+                                />
+                                <label htmlFor="is_featured" style={{ cursor: 'pointer', fontSize: 14, fontWeight: 600, color: data.is_featured ? 'var(--accent)' : 'inherit' }}>
+                                    Featured Article
+                                </label>
+                            </div>
+                            {isEditing && (
+                                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', padding: '0 4px' }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    View Count: <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{article?.view_count || 0}</span>
+                                </div>
+                            )}
                             <div className="form-group">
                                 <label className="admin-label">Publish Date</label>
                                 <input className="admin-input" type="datetime-local" value={data.published_at} onChange={(e) => setData('published_at', e.target.value)} />

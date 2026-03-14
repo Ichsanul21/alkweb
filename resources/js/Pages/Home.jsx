@@ -504,31 +504,47 @@ export default function Home({ statistics, services, portfolios, articles, setti
 
                 {/* ── ARTICLES ── */}
                 {articles && articles.length > 0 && (
-                    <section id="articles">
+                    <section id="articles" style={{ overflow: 'hidden' }}>
                         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.art_tag}</div>
                         <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.art_title}</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 'clamp(16px, 3vw, 30px)' }}>
-                            {articles.map(article => (
-                                <Link key={article.id} href={`/articles/${article.slug}`} style={{ textDecoration: 'none', color: 'inherit', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-glass)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.3s, border-color 0.3s' }} className="hover-trigger" onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'var(--accent)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'var(--border-glass)'; }}>
-                                    {article.featured_image && (
-                                        <img src={article.featured_image} alt={lang === 'id' ? article.title_id : article.title_en} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-                                    )}
-                                    <div style={{ padding: 'clamp(16px, 3vw, 24px)' }}>
-                                        <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-                                            {article.category && <span style={{ padding: '3px 10px', border: '1px solid var(--border-glass)', borderRadius: 50, fontSize: 11, color: 'var(--accent)' }}>{article.category}</span>}
-                                            <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
-                                                {article.published_at && new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                            </span>
+                        
+                        <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
+                            <div className="portfolio-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)', display: 'flex', gap: 24 }}>
+                                {articles.map(article => (
+                                    <Link key={article.id} href={`/articles/${article.slug}`} style={{ flex: '0 0 320px', textDecoration: 'none', color: 'inherit', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-glass)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.3s, border-color 0.3s', display: 'flex', flexDirection: 'column' }} className="hover-trigger" onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'var(--accent)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'var(--border-glass)'; }}>
+                                        {article.featured_image && (
+                                            <div style={{ position: 'relative' }}>
+                                                <img src={article.featured_image} alt={lang === 'id' ? article.title_id : article.title_en} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
+                                                {article.is_featured && (
+                                                    <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>FEATURED</div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                            <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+                                                {article.category && <span style={{ padding: '3px 10px', border: '1px solid var(--border-glass)', borderRadius: 50, fontSize: 11, color: 'var(--accent)' }}>{article.category}</span>}
+                                                <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                                                    {article.published_at && new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                </span>
+                                                <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                    {article.view_count || 0}
+                                                </span>
+                                            </div>
+                                            <h3 className="font-syne" style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 10, lineHeight: 1.3 }}>{lang === 'id' ? article.title_id : article.title_en}</h3>
+                                            {article.excerpt_en && <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: 16 }}>{lang === 'id' ? (article.excerpt_id || article.excerpt_en) : article.excerpt_en}</p>}
+                                            {article.author && <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 'auto' }}>By {article.author.name}</p>}
                                         </div>
-                                        <h3 className="font-syne" style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 700, marginBottom: 10, lineHeight: 1.3 }}>{lang === 'id' ? article.title_id : article.title_en}</h3>
-                                        {article.excerpt_en && <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{lang === 'id' ? (article.excerpt_id || article.excerpt_en) : article.excerpt_en}</p>}
-                                        {article.author && <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 12 }}>By {article.author.name}</p>}
+                                    </Link>
+                                ))}
+                                {/* View More Link at the end of scroll */}
+                                <Link href="/articles" style={{ flex: '0 0 200px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 16, textDecoration: 'none', border: '1px dashed var(--border-glass)', borderRadius: 16, background: 'rgba(255,255,255,0.01)' }} className="hover-trigger">
+                                    <div style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid var(--accent)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--accent)' }}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                     </div>
+                                    <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{i.art_more}</span>
                                 </Link>
-                            ))}
-                        </div>
-                        <div style={{ textAlign: 'center', marginTop: 40 }}>
-                            <Link href="/articles" className="btn hover-trigger">{i.art_more}</Link>
+                            </div>
                         </div>
                     </section>
                 )}

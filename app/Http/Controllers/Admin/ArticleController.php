@@ -52,6 +52,7 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:500',
             'og_image' => 'nullable|string',
             'status' => 'in:draft,published',
+            'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
         ]);
 
@@ -99,6 +100,7 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:500',
             'og_image' => 'nullable|string',
             'status' => 'in:draft,published',
+            'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
         ]);
 
