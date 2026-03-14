@@ -14,7 +14,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export default function Dashboard({ stats, recentContacts, recentArticles, contactsByMonth }) {
+export default function Dashboard({ stats, recentContacts, recentArticles, contactsByMonth, todayVisitors, totalVisitors, visitorsByMonth }) {
     const chartData = {
         labels: contactsByMonth.map((c) => months[c.month - 1] + ' ' + c.year),
         datasets: [
@@ -23,6 +23,20 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                 data: contactsByMonth.map((c) => c.count),
                 backgroundColor: 'rgba(0, 229, 255, 0.3)',
                 borderColor: '#00E5FF',
+                borderWidth: 1,
+                borderRadius: 6,
+            },
+        ],
+    };
+
+    const visitorChartData = {
+        labels: (visitorsByMonth || []).map((v) => months[v.month - 1] + ' ' + v.year),
+        datasets: [
+            {
+                label: 'Visitors',
+                data: (visitorsByMonth || []).map((v) => v.count),
+                backgroundColor: 'rgba(16, 185, 129, 0.3)',
+                borderColor: '#10b981',
                 borderWidth: 1,
                 borderRadius: 6,
             },
@@ -57,13 +71,13 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                     <div className="stat-label">Total Contacts</div>
                 </div>
                 <div className="stat-card">
-                    <div className="stat-value" style={{ color: '#10b981' }}>{stats.new_contacts}</div>
-                    <div className="stat-label">New Leads</div>
+                    <div className="stat-value" style={{ color: '#10b981' }}>{todayVisitors}</div>
+                    <div className="stat-label">Visitors Today (Total: {totalVisitors})</div>
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-                {/* Chart */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+                {/* Contact Chart */}
                 <div className="admin-card">
                     <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: '#e2e8f0' }}>
                         Contact Submissions
@@ -75,6 +89,20 @@ export default function Dashboard({ stats, recentContacts, recentArticles, conta
                     )}
                 </div>
 
+                {/* Visitors Chart */}
+                <div className="admin-card">
+                    <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: '#e2e8f0' }}>
+                        Unique Visitors
+                    </h3>
+                    {visitorsByMonth && visitorsByMonth.length > 0 ? (
+                        <Bar data={visitorChartData} options={chartOptions} />
+                    ) : (
+                        <p style={{ color: '#475569', fontSize: 14 }}>No visitor data yet</p>
+                    )}
+                </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
                 {/* Recent Contacts */}
                 <div className="admin-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>

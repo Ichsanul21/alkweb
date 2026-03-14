@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import { Toaster, toast } from 'react-hot-toast';
 import {
     Bars3Icon,
     XMarkIcon,
@@ -13,12 +14,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: HomeIcon, routeKey: 'admin.dashboard' },
-    { name: 'Portfolios', href: '/admin/portfolios', icon: RectangleGroupIcon, routeKey: 'admin.portfolios' },
-    { name: 'Articles', href: '/admin/articles', icon: DocumentTextIcon, routeKey: 'admin.articles' },
-    { name: 'Contacts', href: '/admin/contacts', icon: ChatBubbleLeftRightIcon, routeKey: 'admin.contacts' },
-    { name: 'Users', href: '/admin/users', icon: UsersIcon, routeKey: 'admin.users' },
-    { name: 'Settings', href: '/admin/settings', icon: Cog6ToothIcon, routeKey: 'admin.settings' },
+    { name: 'Dashboard', href: '/admin', icon: HomeIcon, routeKey: 'admin.dashboard', roles: ['Admin', 'Editor', 'Author'] },
+    { name: 'Portfolios', href: '/admin/portfolios', icon: RectangleGroupIcon, routeKey: 'admin.portfolios', roles: ['Admin', 'Editor'] },
+    { name: 'Articles', href: '/admin/articles', icon: DocumentTextIcon, routeKey: 'admin.articles', roles: ['Admin', 'Editor', 'Author'] },
+    { name: 'Contacts', href: '/admin/contacts', icon: ChatBubbleLeftRightIcon, routeKey: 'admin.contacts', roles: ['Admin', 'Editor'] },
+    { name: 'Users', href: '/admin/users', icon: UsersIcon, routeKey: 'admin.users', roles: ['Admin'] },
+    { name: 'Settings', href: '/admin/settings', icon: Cog6ToothIcon, routeKey: 'admin.settings', roles: ['Admin'] },
 ];
 
 export default function AdminLayout({ children, title }) {
@@ -31,8 +32,25 @@ export default function AdminLayout({ children, title }) {
         return currentPath.startsWith(href);
     };
 
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success, {
+                style: { background: '#111827', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)' },
+                iconTheme: { primary: '#10b981', secondary: '#111827' },
+            });
+        }
+        if (flash?.error) {
+            toast.error(flash.error, {
+                style: { background: '#111827', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' },
+                iconTheme: { primary: '#ef4444', secondary: '#111827' },
+            });
+        }
+    }, [flash]);
+
     return (
         <div className="admin-layout">
+            <Toaster position="top-right" />
+            
             {/* Mobile overlay */}
             {sidebarOpen && (
                 <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
@@ -51,7 +69,10 @@ export default function AdminLayout({ children, title }) {
                 </div>
 
                 <nav className="sidebar-nav">
-                    {navigation.map((item) => (
+                    {navigation.filter(item => {
+                        const userRoles = auth.user?.roles || [];
+                        return item.roles.some(r => userRoles.includes(r));
+                    }).map((item) => (
                         <Link
                             key={item.name}
                             href={item.href}
@@ -64,7 +85,7 @@ export default function AdminLayout({ children, title }) {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <div className="user-info">
+                    <Link href="/profile" className="user-info" style={{ textDecoration: 'none' }}>
                         <div className="user-avatar">
                             {auth.user.name.charAt(0).toUpperCase()}
                         </div>
@@ -72,7 +93,7 @@ export default function AdminLayout({ children, title }) {
                             <p className="user-name">{auth.user.name}</p>
                             <p className="user-email">{auth.user.email}</p>
                         </div>
-                    </div>
+                    </Link>
                     <Link href={route('logout')} method="post" as="button" className="logout-btn">
                         <ArrowLeftOnRectangleIcon className="icon-sm" />
                     </Link>
@@ -92,14 +113,6 @@ export default function AdminLayout({ children, title }) {
                         </Link>
                     </div>
                 </header>
-
-                {/* Flash messages */}
-                {flash?.success && (
-                    <div className="flash flash-success">{flash.success}</div>
-                )}
-                {flash?.error && (
-                    <div className="flash flash-error">{flash.error}</div>
-                )}
 
                 <main className="page-content">
                     {children}

@@ -37,6 +37,9 @@ class HomeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'whatsapp_number' => 'required|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'service_type' => 'required|string|in:Intelligent Software,Smart Infrastructure,Digital Media,Other',
             'message' => 'required|string|max:2000',
         ]);
 

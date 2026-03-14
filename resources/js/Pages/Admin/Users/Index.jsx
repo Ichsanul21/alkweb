@@ -101,7 +101,16 @@ export default function UserIndex({ users, roles }) {
                                         <td>
                                             <div style={{ display: 'flex', gap: 8 }}>
                                                 <button onClick={handleEdit} className="admin-btn admin-btn-primary admin-btn-sm">Save</button>
-                                                <button onClick={() => setEditingId(null)} className="admin-btn admin-btn-secondary admin-btn-sm">Cancel</button>
+                                                <button 
+                                                    onClick={(e) => {
+                                                        if (window.confirm('Are you sure you want to cancel? Unsaved changes will be lost.')) {
+                                                            setEditingId(null);
+                                                        }
+                                                    }} 
+                                                    className="admin-btn admin-btn-secondary admin-btn-sm"
+                                                >
+                                                    Cancel
+                                                </button>
                                             </div>
                                         </td>
                                     </>

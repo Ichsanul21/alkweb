@@ -33,11 +33,25 @@ class DashboardController extends Controller
             ->orderByRaw('YEAR(created_at), MONTH(created_at)')
             ->get();
 
+        // Visitor Stats
+        $todayVisitors = \App\Models\Visitor::where('visited_date', now()->format('Y-m-d'))->count();
+        $totalVisitors = \App\Models\Visitor::count();
+        
+        // Visitors by month
+        $visitorsByMonth = \App\Models\Visitor::selectRaw('MONTH(visited_date) as month, YEAR(visited_date) as year, COUNT(*) as count')
+            ->where('visited_date', '>=', now()->subMonths(6))
+            ->groupByRaw('YEAR(visited_date), MONTH(visited_date)')
+            ->orderByRaw('YEAR(visited_date), MONTH(visited_date)')
+            ->get();
+
         return Inertia::render('Admin/Dashboard', [
             'stats' => $stats,
             'recentContacts' => $recentContacts,
             'recentArticles' => $recentArticles,
             'contactsByMonth' => $contactsByMonth,
+            'todayVisitors' => $todayVisitors,
+            'totalVisitors' => $totalVisitors,
+            'visitorsByMonth' => $visitorsByMonth,
         ]);
     }
 }

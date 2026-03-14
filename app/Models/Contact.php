@@ -9,6 +9,7 @@ class Contact extends Model
     protected $fillable = [
         'name', 'email', 'phone', 'company', 'message',
         'status', 'notes', 'source',
+        'service_type', 'company_name', 'whatsapp_number'
     ];
 
     // Scopes

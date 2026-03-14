@@ -37,6 +37,7 @@ const t = {
         footer_cta_desc: 'We are ready to be your discussion partner. Let\u2019s explore your data potential.',
         form_name: 'Full Name', form_email: 'Email Address', form_project: 'Tell us about your project...',
         form_submit: 'Send Inquiry',
+        form_wa: 'WhatsApp Number', form_company: 'Company Name', form_service: 'Select Service',
     },
     id: {
         nav_services: 'Layanan', nav_portfolio: 'Portofolio', nav_process: 'Proses', nav_close: 'Tutup',
@@ -64,6 +65,7 @@ const t = {
         footer_cta_desc: 'Kami siap menjadi mitra diskusi Anda. Mari jelajahi potensi data Anda.',
         form_name: 'Nama Lengkap', form_email: 'Alamat Email', form_project: 'Ceritakan tentang proyek Anda...',
         form_submit: 'Kirim Pertanyaan',
+        form_wa: 'Nomor WhatsApp', form_company: 'Nama Perusahaan', form_service: 'Pilih Layanan',
     },
 };
 
@@ -84,10 +86,20 @@ export default function Home({ statistics, services, portfolios, articles, setti
     const i = t[lang]; // current language
 
     // Contact form
-    const contactForm = useForm({ name: '', email: '', message: '' });
+    const contactForm = useForm({ name: '', email: '', whatsapp_number: '', company_name: '', service_type: 'Other', message: '' });
     const handleContact = (e) => {
         e.preventDefault();
-        contactForm.post('/contact', { preserveScroll: true, onSuccess: () => contactForm.reset() });
+        contactForm.post('/contact', {
+            preserveScroll: true,
+            onSuccess: () => {
+                const waPhone = '6281258070694';
+                const text = `Halo, Tim Alenkosa,\n\nNama: ${contactForm.data.name}\nPerusahaan: ${contactForm.data.company_name || '-'}\nLayanan: ${contactForm.data.service_type}\nEmail: ${contactForm.data.email}\n\nPesan:\n${contactForm.data.message}`;
+                const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`;
+                
+                window.open(waUrl, '_blank');
+                contactForm.reset();
+            }
+        });
     };
 
     // Theme toggle
@@ -518,12 +530,36 @@ export default function Home({ statistics, services, portfolios, articles, setti
                         </div>
                         <form onSubmit={handleContact} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                             {flash?.success && <div style={{ padding: '12px 20px', borderRadius: 10, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', fontSize: 14 }}>{flash.success}</div>}
-                            <input type="text" className="hover-trigger" placeholder={i.form_name} value={contactForm.data.name} onChange={e => contactForm.setData('name', e.target.value)} style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                            
+                            <input type="text" className="hover-trigger" placeholder={i.form_name} value={contactForm.data.name} onChange={e => contactForm.setData('name', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                             {contactForm.errors.name && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.name}</span>}
-                            <input type="email" className="hover-trigger" placeholder={i.form_email} value={contactForm.data.email} onChange={e => contactForm.setData('email', e.target.value)} style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                            
+                            <input type="email" className="hover-trigger" placeholder={i.form_email} value={contactForm.data.email} onChange={e => contactForm.setData('email', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
                             {contactForm.errors.email && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.email}</span>}
-                            <textarea className="hover-trigger" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                                <div>
+                                    <input type="text" className="hover-trigger" placeholder={i.form_wa} value={contactForm.data.whatsapp_number} onChange={e => contactForm.setData('whatsapp_number', e.target.value)} required style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    {contactForm.errors.whatsapp_number && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.whatsapp_number}</span>}
+                                </div>
+                                <div>
+                                    <input type="text" className="hover-trigger" placeholder={i.form_company} value={contactForm.data.company_name} onChange={e => contactForm.setData('company_name', e.target.value)} style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none' }} />
+                                    {contactForm.errors.company_name && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.company_name}</span>}
+                                </div>
+                            </div>
+
+                            <select className="hover-trigger" value={contactForm.data.service_type} onChange={e => contactForm.setData('service_type', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', appearance: 'none', cursor: 'pointer' }}>
+                                <option value="Other" style={{ background: '#020c15' }}>{i.form_service}</option>
+                                <option value="Intelligent Software" style={{ background: '#020c15' }}>Intelligent Software</option>
+                                <option value="Smart Infrastructure" style={{ background: '#020c15' }}>Smart Infrastructure</option>
+                                <option value="Digital Media" style={{ background: '#020c15' }}>Digital Media</option>
+                                <option value="Other" style={{ background: '#020c15' }}>Other</option>
+                            </select>
+                            {contactForm.errors.service_type && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.service_type}</span>}
+                            
+                            <textarea className="hover-trigger" placeholder={i.form_project} rows={3} value={contactForm.data.message} onChange={e => contactForm.setData('message', e.target.value)} required style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--border-glass)', padding: '16px 0', fontSize: 20, color: 'var(--text-primary)', outline: 'none', resize: 'none' }} />
                             {contactForm.errors.message && <span style={{ color: '#ef4444', fontSize: 12 }}>{contactForm.errors.message}</span>}
+                            
                             <button type="submit" className="btn hover-trigger" disabled={contactForm.processing} style={{ alignSelf: 'flex-start', marginTop: 16 }}>
                                 {contactForm.processing ? '...' : i.form_submit}
                             </button>

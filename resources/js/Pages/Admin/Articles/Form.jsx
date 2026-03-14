@@ -178,7 +178,17 @@ export default function ArticleForm({ article }) {
                                 <button type="submit" disabled={processing} className="admin-btn admin-btn-primary" style={{ flex: 1 }}>
                                     {processing ? 'Saving...' : (isEditing ? 'Update' : 'Create')}
                                 </button>
-                                <Link href="/admin/articles" className="admin-btn admin-btn-secondary">Cancel</Link>
+                                <Link 
+                                    href="/admin/articles" 
+                                    className="admin-btn admin-btn-secondary"
+                                    onClick={(e) => {
+                                        if (!window.confirm('Are you sure you want to cancel? Unsaved changes will be lost.')) {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                >
+                                    Cancel
+                                </Link>
                             </div>
                         </div>
 

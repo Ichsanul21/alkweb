@@ -34,30 +34,33 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\EnsureUserHasAdminAc
     ->name('admin.')
     ->group(function () {
 
+        // Dashboard - All Roles
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Portfolio CRUD
-        Route::resource('portfolios', PortfolioController::class)->except(['show']);
+        // Articles - Admin, Editor, Author
+        Route::middleware(['role:Admin|Editor|Author'])->group(function () {
+            Route::resource('articles', ArticleController::class)->except(['show']);
+        });
 
-        // Article CRUD
-        Route::resource('articles', ArticleController::class)->except(['show']);
+        // Content Management - Admin & Editor
+        Route::middleware(['role:Admin|Editor'])->group(function () {
+            Route::resource('portfolios', PortfolioController::class)->except(['show']);
+            Route::get('contacts/export', [ContactController::class, 'export'])->name('contacts.export');
+            Route::resource('contacts', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
+            
+            // File Upload
+            Route::post('upload', [UploadController::class, 'store'])->name('upload.store');
+            Route::delete('upload', [UploadController::class, 'destroy'])->name('upload.destroy');
+        });
 
-        // CRM / Contacts
-        Route::get('contacts/export', [ContactController::class, 'export'])->name('contacts.export');
-        Route::resource('contacts', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
-
-        // Users & Roles
-        Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
-
-        // Settings
-        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
-        Route::put('settings/statistics/{statistic}', [SettingController::class, 'updateStatistic'])->name('settings.statistic.update');
-        Route::put('settings/services/{service}', [SettingController::class, 'updateService'])->name('settings.service.update');
-
-        // File Upload
-        Route::post('upload', [UploadController::class, 'store'])->name('upload.store');
-        Route::delete('upload', [UploadController::class, 'destroy'])->name('upload.destroy');
+        // System Settings - Admin Only
+        Route::middleware(['role:Admin'])->group(function () {
+            Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+            Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+            Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+            Route::put('settings/statistics/{statistic}', [SettingController::class, 'updateStatistic'])->name('settings.statistic.update');
+            Route::put('settings/services/{service}', [SettingController::class, 'updateService'])->name('settings.service.update');
+        });
     });
 
 // ── Profile Routes ──────────────────────────────────────────────
