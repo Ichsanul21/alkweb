@@ -63,7 +63,7 @@ export default function InquirySuccessModal({ isOpen, onClose, formData, lang })
                     ✓
                 </div>
 
-                <h2 className="font-syne" style={{ fontSize: 32, fontWeight: 800, marginBottom: 20 }}>
+                <h2 className="font-brand" style={{ fontSize: 32, fontWeight: 800, marginBottom: 20 }}>
                     {lang === 'id' ? 'Inquiry Terkirim!' : 'Inquiry Sent!'}
                 </h2>
                 <p style={{ fontSize: 18, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 40 }}>

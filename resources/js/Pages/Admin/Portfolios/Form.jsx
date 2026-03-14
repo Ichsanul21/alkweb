@@ -355,7 +355,7 @@ export default function PortfolioForm({ portfolio }) {
                                 </div>
                             </div>
                             {isEditing && (
-                                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', padding: '0 4px', marginBottom: 12 }}>
+                                <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', padding: '0 4px', marginBottom: 12, fontFamily: "'JetBrains Mono', monospace" }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                     View Count: <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{portfolio?.view_count || 0}</span>
                                 </div>
@@ -425,8 +425,8 @@ export default function PortfolioForm({ portfolio }) {
                     height: 0;
                     pointer-events: none;
                 }
-                .wysiwyg-content .tiptap h2 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.5rem; }
-                .wysiwyg-content .tiptap h3 { font-size: 1.25rem; font-weight: 600; margin: 0.8rem 0 0.4rem; }
+                .wysiwyg-content .tiptap h2 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif; }
+                .wysiwyg-content .tiptap h3 { font-size: 1.25rem; font-weight: 600; margin: 0.8rem 0 0.4rem; font-family: 'Plus Jakarta Sans', sans-serif; }
                 .wysiwyg-content .tiptap ul, .wysiwyg-content .tiptap ol { padding-left: 1.5rem; }
                 .wysiwyg-content .tiptap blockquote {
                     border-left: 3px solid #00E5FF;

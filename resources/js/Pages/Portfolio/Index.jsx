@@ -19,7 +19,7 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
 
             <section style={{ padding: 'clamp(40px, 8vw, 80px) 5vw' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>// Portfolio</div>
-                <h1 className="font-syne" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, textTransform: 'uppercase', marginBottom: 40 }}>Our Work.</h1>
+                <h1 className="font-brand" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, textTransform: 'uppercase', marginBottom: 40 }}>Our Work.</h1>
 
                 {/* Category Filter */}
                 {categories.length > 0 && (
@@ -37,16 +37,16 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                         <img src={featuredProject.featured_image} alt={lang === 'id' ? featuredProject.title_id : featuredProject.title_en} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
                         <div style={{ position: 'absolute', bottom: 'clamp(30px, 6vw, 60px)', left: 'clamp(30px, 6vw, 60px)', right: 'clamp(30px, 6vw, 60px)', zIndex: 2 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                                <span style={{ background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>FEATURED PROJECT</span>
-                                <span style={{ padding: '4px 12px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, fontSize: 11, backdropFilter: 'blur(10px)', color: '#fff' }}>{featuredProject.category}</span>
+                                <span style={{ background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: 20, fontSize: 10, fontWeight: 800, letterSpacing: 1, fontFamily: "'JetBrains Mono', monospace" }}>FEATURED PROJECT</span>
+                                <span style={{ padding: '4px 12px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, fontSize: 10, backdropFilter: 'blur(10px)', color: '#fff', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{featuredProject.category.toUpperCase()}</span>
                             </div>
-                            <h2 className="font-syne" style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)', color: '#fff', fontWeight: 800, lineHeight: 1, marginBottom: 20 }}>{lang === 'id' ? featuredProject.title_id : featuredProject.title_en}</h2>
+                            <h2 className="font-brand" style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)', color: '#fff', fontWeight: 800, lineHeight: 1, marginBottom: 20 }}>{lang === 'id' ? featuredProject.title_id : featuredProject.title_en}</h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 20, color: 'rgba(255,255,255,0.7)' }}>
                                 <span style={{ fontSize: 14 }}>{lang === 'id' ? 'Lihat Detail Proyek' : 'View Project Details'} →</span>
                                 <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.2)' }} />
-                                <span style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    {featuredProject.view_count || 0} views
+                                <span style={{ fontSize: 12, display: 'flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace" }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    {featuredProject.view_count || 0} VIEWS
                                 </span>
                             </div>
                         </div>
@@ -68,10 +68,10 @@ export default function PortfolioIndex({ portfolios, categories, filters }) {
                             <div style={{ position: 'absolute', bottom: 'clamp(15px, 3vw, 30px)', left: 'clamp(15px, 3vw, 30px)', right: 'clamp(15px, 3vw, 30px)', color: '#fff', zIndex: 2 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                                     <div>
-                                        <span style={{ display: 'inline-block', padding: '5px 12px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, fontSize: 11, marginBottom: 8, backdropFilter: 'blur(10px)' }}>{p.category}</span>
-                                        <h3 className="font-syne" style={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', fontWeight: 700, lineHeight: 1.1 }}>{lang === 'id' ? (p.title_id || p.title_en) : p.title_en}</h3>
+                                        <span style={{ display: 'inline-block', padding: '5px 12px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, fontSize: 10, marginBottom: 8, backdropFilter: 'blur(10px)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{p.category.toUpperCase()}</span>
+                                        <h3 className="font-brand" style={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', fontWeight: 700, lineHeight: 1.1 }}>{lang === 'id' ? (p.title_id || p.title_en) : p.title_en}</h3>
                                     </div>
-                                    <div style={{ fontSize: 11, display: 'flex', alignItems: 'center', gap: 4, opacity: 0.8, marginBottom: 4 }}>
+                                    <div style={{ fontSize: 11, display: 'flex', alignItems: 'center', gap: 4, opacity: 0.8, marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                         {p.view_count || 0}
                                     </div>

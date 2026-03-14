@@ -28,7 +28,7 @@ export default function CustomDropdown({ options, value, onChange, placeholder, 
             className={`custom-dropdown ${className}`} 
             ref={dropdownRef} 
             tabIndex={0}
-            style={{ position: 'relative', width: '100%', outline: 'none' }}
+            style={{ position: 'relative', width: '100%', outline: 'none', fontFamily: 'var(--primary-font)' }}
             onFocus={(e) => {
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 229, 255, 0.05)';
                 e.currentTarget.querySelector('.dropdown-trigger').style.borderColor = 'var(--accent)';

@@ -88,7 +88,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
     const cursorRef = useRef(null);
     const lenisRef = useRef(null);
     const { flash } = usePage().props;
-    const i = t[lang]; // current language
+    const i = t[lang];
 
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -158,6 +158,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
             document.querySelectorAll('.counter').forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
                 const suffix = counter.getAttribute('data-suffix') || '+';
+                counter.style.fontFamily = "'JetBrains Mono', monospace";
                 ScrollTrigger.create({
                     trigger: counter, start: 'top 85%', once: true,
                     onEnter: () => gsap.to(counter, {
@@ -341,7 +342,8 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 <meta name="twitter:description" content={seo.seo_description || ''} />
                 <link rel="icon" type="image/png" href="/images/favicon.png" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             </Head>
 
@@ -351,10 +353,10 @@ export default function Home({ statistics, services, portfolios, articles, setti
 
             {/* ── PRELOADER ── */}
             <div id="preloader">
-                <div className="preloader-sys-info font-syne" style={{ position: 'absolute', top: 'clamp(20px, 4vw, 40px)', left: 'clamp(20px, 4vw, 40px)', fontSize: 11, letterSpacing: 2, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                <div className="preloader-sys-info font-brand" style={{ position: 'absolute', top: 'clamp(20px, 4vw, 40px)', left: 'clamp(20px, 4vw, 40px)', fontSize: 11, letterSpacing: 2, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
                     SYS_BOOT_SEQ // <span id="bootStatus" style={{ color: 'var(--text-primary)' }}>INIT</span>
                 </div>
-                <div className="preloader-counter font-syne" style={{ position: 'absolute', bottom: 'clamp(20px, 4vw, 40px)', right: 'clamp(20px, 4vw, 40px)', fontSize: 'clamp(3rem, 12vw, 8rem)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.85, letterSpacing: '-0.05em' }}>
+                <div className="preloader-counter font-brand" style={{ position: 'absolute', bottom: 'clamp(20px, 4vw, 40px)', right: 'clamp(20px, 4vw, 40px)', fontSize: 'clamp(3rem, 12vw, 8rem)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.85, letterSpacing: '-0.05em' }}>
                     <span id="loadCount">00</span><span style={{ fontSize: '0.5em', verticalAlign: 'top', color: 'var(--accent)' }}>%</span>
                 </div>
                 <div className="loader-module">
@@ -416,7 +418,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {/* ── HERO ── */}
                 <section className="hero">
                     <div>
-                        <h1 className="font-syne title-huge">
+                        <h1 className="font-brand title-huge">
                             <span className="text-reveal"><span className="hero-text">{i.hero_1}</span></span>
                             <span className="text-reveal"><span className="hero-text" style={{ color: 'var(--accent)' }}>{i.hero_2}</span></span>
                             <span className="text-reveal"><span className="hero-text">{i.hero_3}</span></span>
@@ -438,7 +440,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 <section className="stats">
                     {statistics.map(stat => (
                         <div key={stat.id}>
-                            <div className="stat-val font-syne counter" data-target={stat.value} data-suffix={stat.suffix}>0</div>
+                            <div className="stat-val font-brand counter" data-target={stat.value} data-suffix={stat.suffix}>0</div>
                             <div className="stat-label" dangerouslySetInnerHTML={{ __html: (lang === 'id' ? stat.label_id : stat.label_en).replace(/\n/g, '<br>') }} />
                         </div>
                     ))}
@@ -447,15 +449,15 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {/* ── ABOUT ── */}
                 <section id="story">
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.about_tag}</div>
-                    <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.about_title}</h2>
+                    <h2 className="title-large font-brand" style={{ marginBottom: 40 }}>{i.about_title}</h2>
                     <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '40px' }}>
                         <div>
                             <p style={{ fontSize: 20, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 24 }}>{i.about_desc}</p>
                         </div>
                         <div>
-                            <h3 className="font-syne" style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{i.about_vision_title}</h3>
+                            <h3 className="font-brand" style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{i.about_vision_title}</h3>
                             <p style={{ color: 'var(--text-secondary)', fontSize: 18, marginBottom: 32 }}>{i.about_vision_desc}</p>
-                            <h3 className="font-syne" style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{i.about_values_title}</h3>
+                            <h3 className="font-brand" style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>{i.about_values_title}</h3>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                                 <span className="tag" style={{ border: '1px solid var(--text-primary)', color: 'var(--text-primary)', padding: '8px 20px' }}>Innovation</span>
                                 <span className="tag" style={{ border: '1px solid var(--text-primary)', color: 'var(--text-primary)', padding: '8px 20px' }}>Scalability</span>
@@ -468,15 +470,15 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {/* ── PROCESS / MISSION (moved after About) ── */}
                 <section id="process">
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.proc_tag}</div>
-                    <h2 className="title-large font-syne" style={{ marginBottom: 80, textAlign: 'center' }}>{i.proc_title}</h2>
+                    <h2 className="title-large font-brand" style={{ marginBottom: 80, textAlign: 'center' }}>{i.proc_title}</h2>
                     {[1, 2, 3].map(n => (
                         <div key={n} className="process-item step">
                             <div className="process-img-col">
                                 <img src={processImages[n - 1]} className="process-img p-img" alt="" />
                             </div>
                             <div className="p-text">
-                                <div className="process-num-large font-syne">{String(n).padStart(2, '0')}</div>
-                                <h3 className="font-syne" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: 16, marginTop: -20 }}>{i[`proc_${n}_title`]}</h3>
+                                <div className="process-num-large font-brand">{String(n).padStart(2, '0')}</div>
+                                <h3 className="font-brand" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: 16, marginTop: -20 }}>{i[`proc_${n}_title`]}</h3>
                                 <p style={{ fontSize: 18, color: 'var(--text-secondary)' }}>{i[`proc_${n}_desc`]}</p>
                             </div>
                         </div>
@@ -488,16 +490,16 @@ export default function Home({ statistics, services, portfolios, articles, setti
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.svc_tag}</div>
                     <div className="services-layout">
                         <div className="services-nav">
-                            <h2 className="title-large font-syne text-reveal"><span className="svc-header">{i.svc_title_1}</span></h2>
-                            <h2 className="title-large font-syne text-reveal"><span className="svc-header">{i.svc_title_2}</span></h2>
+                            <h2 className="title-large font-brand text-reveal"><span className="svc-header">{i.svc_title_1}</span></h2>
+                            <h2 className="title-large font-brand text-reveal"><span className="svc-header">{i.svc_title_2}</span></h2>
                             <p style={{ marginTop: 32, fontSize: 20, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 450 }}>{i.svc_desc}</p>
                         </div>
                         <div className="services-list">
                             {services.map(svc => (
                                 <div key={svc.id} className="service-item hover-trigger">
-                                    <div className="service-num font-syne">{svc.number}</div>
+                                    <div className="service-num font-brand">{svc.number}</div>
                                     <div>
-                                        <div className="font-syne">{lang === 'id' ? svc.title_id : svc.title_en}</div>
+                                        <div className="font-brand">{lang === 'id' ? svc.title_id : svc.title_en}</div>
                                         <div className="service-desc">{lang === 'id' ? svc.description_id : svc.description_en}</div>
                                     </div>
                                 </div>
@@ -509,7 +511,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {/* ── PORTFOLIO ── */}
                 <section id="portfolio" style={{ overflow: 'hidden' }}>
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.port_tag}</div>
-                    <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.port_title}</h2>
+                    <h2 className="title-large font-brand" style={{ marginBottom: 40 }}>{i.port_title}</h2>
                     <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
                         <div className="portfolio-wrapper horizontal-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
                             {portfolios.map(p => (
@@ -522,7 +524,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                                             <div>
                                                 <div className="tag" style={{ marginBottom: 8 }}>{p.category}</div>
-                                                <h3 className="font-syne">{lang === 'id' ? p.title_id : p.title_en}</h3>
+                                                <h3 className="font-brand">{lang === 'id' ? p.title_id : p.title_en}</h3>
                                             </div>
                                             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -540,7 +542,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {articles && articles.length > 0 && (
                     <section id="articles" style={{ overflow: 'hidden' }}>
                         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 3, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 16 }}>{i.art_tag}</div>
-                        <h2 className="title-large font-syne" style={{ marginBottom: 40 }}>{i.art_title}</h2>
+                        <h2 className="title-large font-brand" style={{ marginBottom: 40 }}>{i.art_title}</h2>
                         
                         <div className="portfolio-container" style={{ width: '100vw', marginLeft: 'calc(-1 * clamp(20px, 5vw, 50px))' }}>
                             <div className="portfolio-wrapper horizontal-wrapper" style={{ paddingLeft: 'clamp(20px, 5vw, 50px)', paddingRight: 'clamp(20px, 5vw, 50px)' }}>
@@ -556,13 +558,13 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                                                 <div>
                                                     <div className="tag" style={{ marginBottom: 8 }}>{article.category}</div>
-                                                    <h3 className="font-syne">{lang === 'id' ? article.title_id : article.title_en}</h3>
-                                                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 8 }}>
+                                                    <h3 className="font-brand">{lang === 'id' ? article.title_id : article.title_en}</h3>
+                                                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 8, fontFamily: "'JetBrains Mono', monospace" }}>
                                                         {article.published_at && new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                                         {article.author && ` • By ${article.author.name}`}
                                                     </div>
                                                 </div>
-                                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>
                                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                                     {article.view_count || 0}
                                                 </div>
@@ -575,7 +577,7 @@ export default function Home({ statistics, services, portfolios, articles, setti
                                     <div style={{ width: 64, height: 64, borderRadius: '50%', border: '1px solid var(--accent)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--accent)' }}>
                                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                     </div>
-                                    <span className="font-syne" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: 2 }}>{i.art_more}</span>
+                                    <span className="font-brand" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: 2 }}>{i.art_more}</span>
                                 </Link>
                             </div>
                         </div>
@@ -585,15 +587,15 @@ export default function Home({ statistics, services, portfolios, articles, setti
                 {/* ── FOOTER ── */}
                 <footer>
                     <div className="marquee hover-trigger">
-                        <div className="marquee-text font-syne">{i.marquee}</div>
-                        <div className="marquee-text font-syne">{i.marquee}</div>
+                        <div className="marquee-text">{i.marquee}</div>
+                        <div className="marquee-text">{i.marquee}</div>
                     </div>
 
                     <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 80, padding: '40px 0' }}>
                         <div>
-                            <h3 className="font-syne" style={{ fontSize: 28, fontWeight: 700, marginBottom: 24 }}>{i.footer_cta_title}</h3>
+                            <h3 className="font-brand" style={{ fontSize: 28, fontWeight: 700, marginBottom: 24 }}>{i.footer_cta_title}</h3>
                             <p style={{ fontSize: 20, color: 'var(--text-secondary)', maxWidth: 380, marginBottom: 40 }}>{i.footer_cta_desc}</p>
-                            <a href={`mailto:${settings?.general?.company_email || 'hello@alenkosa.id'}`} className="hover-trigger" style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Syne', sans-serif", borderBottom: '1px solid var(--text-primary)', paddingBottom: 8, transition: 'color 0.3s, border-color 0.3s' }}>
+                            <a href={`mailto:${settings?.general?.company_email || 'hello@alenkosa.id'}`} className="hover-trigger" style={{ fontSize: 24, fontWeight: 700, borderBottom: '1px solid var(--text-primary)', paddingBottom: 8, transition: 'color 0.3s, border-color 0.3s' }}>
                                 {settings?.general?.company_email || 'hello@alenkosa.id'}
                             </a>
                         </div>

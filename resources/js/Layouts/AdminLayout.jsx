@@ -122,12 +122,14 @@ export default function AdminLayout({ children, title }) {
             </div>
 
             <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
                 .admin-layout {
                     display: flex;
                     min-height: 100vh;
                     background: #0a0f1a;
                     color: #e2e8f0;
-                    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+                    font-family: 'Plus Jakarta Sans', sans-serif;
                 }
 
                 .icon-sm { width: 20px; height: 20px; }
@@ -390,6 +392,7 @@ export default function AdminLayout({ children, title }) {
                     font-weight: 800;
                     color: #00E5FF;
                     line-height: 1;
+                    font-family: 'JetBrains Mono', monospace;
                 }
                 .stat-card .stat-label {
                     font-size: 13px;

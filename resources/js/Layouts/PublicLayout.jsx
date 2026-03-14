@@ -24,7 +24,12 @@ export default function PublicLayout({ children, title }) {
     }, []);
 
     return (
-        <div>
+        <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <Head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+            </Head>
             <div className="gradient-orb" />
             <div id="cursor" ref={cursorRef} />
 
